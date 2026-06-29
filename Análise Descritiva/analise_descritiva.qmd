@@ -1,0 +1,430 @@
+---
+title: "Análise Descritiva — Previsão de Temperatura Horária em Niterói"
+subtitle: "Redes Neurais Recorrentes (LSTM) aplicadas a dados ERA5-Land"
+author:
+  - "Caio Vinicius Araujo de Oliveira Salviano (223054059)"
+  - "Richard Amarante Melo (123054005)"
+institute: "Universidade Federal Fluminense"
+date: today
+date-format: "DD/MM/YYYY"
+lang: pt-BR
+
+format:
+  pdf:
+    documentclass: article
+    papersize: a4
+    toc: true
+    toc-title: "Sumário"
+    lof: false
+    lot: false
+    number-sections: true
+    colorlinks: true
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=3cm
+      - right=2cm
+    highlight-style: tango
+    include-in-header:
+      text: |
+        \usepackage{float}
+        \usepackage{booktabs}
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  fig-pos: "H"
+  fig-width: 9
+  fig-height: 4
+---
+
+# Introdução
+
+Este relatório apresenta a análise descritiva dos dados meteorológicos horários
+obtidos para o município de Niterói, RJ, com o objetivo de prever a
+**temperatura horária do ar** utilizando Redes Neurais Recorrentes do tipo
+LSTM (*Long Short-Term Memory*).
+
+Os dados são provenientes de duas fontes:
+
+- **ERA5-Land** (até 02/06/2026): reanálise climática global de alta resolução
+(aproximadamente 9 km), produzida pelo ECMWF em parceria com o programa
+Copernicus, com cobertura histórica em resolução horária.
+- **Meteostat** (a partir de 03/06/2026): dados obtidos via API, utilizados para
+complementar a série com observações recentes.
+
+Todas as covariáveis são numéricas, e a base completa possui resolução
+temporal horária.
+
+# Dados Faltantes
+
+A base não apresenta nenhum dado faltante.
+
+Por se tratar de dados de satélite e reanálise climática, a cobertura temporal é praticamente integral — característica esperada de uma fonte como o ERA5-Land, que é referência global em análise climática e preenche eventuais lacunas observacionais por meio de modelos físico-matemáticos.
+
+# Análise Descritiva Univariada
+
+A seguir são apresentadas as séries temporais de todas as variáveis meteorológicas nas agregações horárias, diárias, semanais e mensais.
+
+A visualização em múltiplas escalas temporais permite identificar padrões de curto e longo prazo, sazonalidades e possíveis anomalias em cada variável.
+
+## Variável-Alvo: Temperatura do Ar
+
+![Temperatura do Ar Horária](resultados/Temperatura/00_temperatura_horaria.png)
+
+![Temperatura Média Diária](resultados/Temperatura/01_temperatura_media_diaria.png)
+
+![Temperatura Média Semanal](resultados/Temperatura/02_temperatura_media_semanal.png)
+
+![Temperatura Média Mensal](resultados/Temperatura/03_temperatura_media_mensal.png)
+
+![Distribuição da Temperatura](resultados/Temperatura/04_temperatura_distribuicao.png)
+
+### Principais Achados
+
+As séries horárias e diárias revelam uma **sazonalidade anual muito pronunciada**: picos de temperatura (próximos a 40 °C) ocorrem sistematicamente no verão (dezembro–fevereiro), enquanto os valores mínimos (abaixo de 15 °C) concentram-se no inverno (junho–agosto).
+
+Na escala horária, a amplitude diária é elevada — chegando a 15–20 °C entre a madrugada e a tarde —, o que reforça a importância de uma janela de entrada suficientemente longa para o modelo LSTM.
+
+Na escala mensal, a temperatura média oscila entre aproximadamente 20 °C (inverno) e 28 °C (verão), sem tendência de aquecimento visível ao longo dos 17 anos da série.
+
+O histograma mostra distribuição **ligeiramente assimétrica à direita**, com moda em torno de 24–25 °C e cauda superior estendida até ~40 °C. O boxplot confirma a ausência de outliers extremos inferiores, mas evidencia alguns pontos acima de 38 °C, provavelmente associados a ondas de calor no verão.
+
+## Covariáveis
+
+### Umidade Relativa
+
+![Umidade Relativa Horária](resultados/UmidadRel/00_umidade_relativa_horaria.png)
+
+![Umidade Relativa Média Diária](resultados/UmidadRel/01_umidade_relativa_media_diaria.png)
+
+![Umidade Relativa Média Semanal](resultados/UmidadRel/02_umidade_relativa_media_semanal.png)
+
+![Umidade Relativa Média Mensal](resultados/UmidadRel/03_umidade_relativa_media_mensal.png)
+
+![Distribuição da Umidade Relativa](resultados/UmidadRel/04_umidadrel_distribuicao.png)
+
+#### Principais Achados
+
+A umidade relativa mantém-se **persistentemente elevada** ao longo de toda a série, com valores horários raramente abaixo de 40% e mediana próxima a 80%. Na escala mensal, oscila entre ~70% (meses mais secos de inverno) e ~87% (verão/outono), sem tendência temporal clara.
+
+A distribuição é **assimétrica à esquerda** (cauda inferior), com a grande maioria
+das observações concentradas entre 70% e 100%. Isso indica que Niterói raramente
+experimenta condições de ar seco, o que é esperado para uma cidade litorânea.
+O comportamento é inversamente correlacionado com a temperatura, conforme
+evidenciado nas análises conjuntas.
+
+### Precipitação
+
+![Precipitação Horária](resultados/Precipitacao/00_precipitacao_horaria.png)
+
+![Precipitação Acumulada Diária](resultados/Precipitacao/01_precipitacao_total_diaria.png)
+
+![Precipitação Acumulada Semanal](resultados/Precipitacao/02_precipitacao_total_semanal.png)
+
+![Precipitação Acumulada Mensal](resultados/Precipitacao/03_precipitacao_total_mensal.png)
+
+![Distribuição da Precipitação](resultados/Precipitacao/04_precipitacao_distribuicao.png)
+
+#### Principais Achados
+
+A precipitação apresenta o padrão **mais singular** de todas as variáveis: a esmagadora maioria das observações horárias é zero, com eventos intensos e pontuais que chegam a superar 10 mm/h. O histograma confirma essa característica com distribuição fortemente concentrada em zero e cauda extremamente longa à direita.
+
+Na escala diária e semanal, destacam-se eventos extremos — dias com acumulado superior a 50 mm aparecem em vários anos, com um pico notável próximo a 150 mm/dia em 2022. Na escala mensal, os meses de verão (especialmente novembro a março) concentram os maiores volumes, enquanto o inverno tende a ser significativamente mais seco, refletindo o regime tropical/subtropical da região.
+
+### Velocidade do Vento
+
+![Velocidade do Vento Horária](resultados/VelocVento/00_velocidade_vento_horaria.png)
+
+![Velocidade Média Diária do Vento](resultados/VelocVento/01_velocidade_vento_media_diaria.png)
+
+![Velocidade Média Semanal do Vento](resultados/VelocVento/02_velocidade_vento_media_semanal.png)
+
+![Velocidade Média Mensal do Vento](resultados/VelocVento/03_velocidade_vento_media_mensal.png)
+
+![Distribuição da Velocidade do Vento](resultados/VelocVento/04_velocvento_distribuicao.png)
+
+#### Principais Achados
+
+A velocidade do vento horária varia de 0 a cerca de 40 m/s, com a série apresentando **alta variabilidade intradiária** e alguns picos extremos isolados que podem corresponder a eventos convectivos ou rajadas. A escala diária suaviza esse ruído e revela um padrão de variação sazonal moderado, com ventos ligeiramente mais intensos no inverno e primavera.
+
+O histograma mostra distribuição **assimétrica à direita**, típica de séries de velocidade de vento, com moda próxima a 5–8 m/s e cauda estendida. O boxplot evidencia vários outliers superiores, consistentes com os picos observados na série horária.
+
+### Temperatura da Superfície
+
+![Temperatura da Superfície Horária](resultados/TempSuperficie/00_tempsuperficie_horario.png)
+
+![Temperatura da Superfície Média Diária](resultados/TempSuperficie/01_tempsuperficie_diario.png)
+
+![Temperatura da Superfície Média Semanal](resultados/TempSuperficie/02_tempsuperficie_semanal.png)
+
+![Temperatura da Superfície Média Mensal](resultados/TempSuperficie/03_tempsuperficie_mensal.png)
+
+![Distribuição da Temperatura da Superfície](resultados/TempSuperficie/04_tempsuperficie_distribuicao.png)
+
+#### Principais Achados
+
+A temperatura da superfície segue o mesmo padrão sazonal da temperatura do ar, porém com **amplitudes consideravelmente maiores**: os picos chegam a valores próximos de 50 °C nas séries horárias de verão, enquanto os mínimos ficam em torno de 10–12 °C no inverno. Essa diferença em relação à temperatura do ar reflete o aquecimento radiativo direto da superfície terrestre.
+
+A distribuição é **mais larga** do que a da temperatura do ar, com maior dispersão nos valores altos. Isso sugere que a superfície é mais sensível às variações de radiação solar, tornando essa variável um preditor relevante para o modelo.
+
+### Temperatura do Ponto de Orvalho
+
+![Temperatura do Ponto de Orvalho Horária](resultados/TempOrvalho/00_temporvalho_horario.png)
+
+![Temperatura do Ponto de Orvalho Média Diária](resultados/TempOrvalho/01_temporvalho_diario.png)
+
+![Temperatura do Ponto de Orvalho Média Semanal](resultados/TempOrvalho/02_temporvalho_semanal.png)
+
+![Temperatura do Ponto de Orvalho Média Mensal](resultados/TempOrvalho/03_temporvalho_mensal.png)
+
+![Distribuição da Temperatura do Ponto de Orvalho](resultados/TempOrvalho/04_temporvalho_distribuicao.png)
+
+#### Principais Achados
+
+A temperatura do ponto de orvalho acompanha a temperatura do ar, mantendo-se geralmente entre 15 °C e 25 °C ao longo do ano, com sazonalidade anual clara. Os valores mais baixos (abaixo de 10 °C) ocorrem raramente e concentram-se nos invernos mais secos.
+
+A distribuição é **mais asimétrica e estreita** do que a da temperatura do ar, refletindo a maior estabilidade da umidade absoluta em regiões litorâneas. A proximidade entre a temperatura do ar e a do ponto de orvalho na maior parte do tempo confirma a alta umidade relativa característica de Niterói.
+
+### Radiação Solar Líquida
+
+![Radiação Solar Líquida Horária](resultados/RadiacaoSolar/00_radiacaosolar_horario.png)
+
+![Radiação Solar Líquida Média Diária](resultados/RadiacaoSolar/01_radiacaosolar_diario.png)
+
+![Radiação Solar Líquida Média Semanal](resultados/RadiacaoSolar/02_radiacaosolar_semanal.png)
+
+![Radiação Solar Líquida Média Mensal](resultados/RadiacaoSolar/03_radiacaosolar_mensal.png)
+
+![Distribuição da Radiação Solar Líquida](resultados/RadiacaoSolar/04_radiacaosolar_distribuicao.png)
+
+#### Principais Achados
+
+A radiação solar líquida exibe a **mais marcante sazonalidade diária** de todas as variáveis: os valores são positivos durante o dia e nulos (ou levemente negativos) à noite, gerando uma estrutura periódica de 24 horas extremamente regular. Na escala diária, os picos chegam a valores superiores a 200 W/m² no verão, enquanto o inverno apresenta médias diárias claramente menores.
+
+A distribuição é **assimétrica à direita,** com pico no zero.
+
+### Radiação Térmica Líquida
+
+![Radiação Térmica Líquida Horária](resultados/RadiacaoTermica/00_radiacaotermica_horario.png)
+
+![Radiação Térmica Líquida Média Diária](resultados/RadiacaoTermica/01_radiacaotermica_diario.png)
+
+![Radiação Térmica Líquida Média Semanal](resultados/RadiacaoTermica/02_radiacaotermica_semanal.png)
+
+![Radiação Térmica Líquida Média Mensal](resultados/RadiacaoTermica/03_radiacaotermica_mensal.png)
+
+![Distribuição da Radiação Térmica Líquida](resultados/RadiacaoTermica/04_radiacaotermica_distribuicao.png)
+
+#### Principais Achados
+
+A radiação térmica líquida apresenta **valores negativos**, indicando perda contínua de energia pela superfície. A amplitude é menor do que a da radiação solar, com variações sazonais moderadas e picos negativos mais intensos no inverno (noites frias e céu limpo favorecem maior perda radiativa).
+
+A distribuição não tem caudas extremas pronunciadas como da radiação solar.
+
+### Fluxo de Calor Sensível
+
+![Fluxo de Calor Sensível Horário](resultados/FluxoCalorSensivel/00_fluxocalorsensivel_horario.png)
+
+![Fluxo de Calor Sensível Médio Diário](resultados/FluxoCalorSensivel/01_fluxocalorsensivel_diario.png)
+
+![Fluxo de Calor Sensível Médio Semanal](resultados/FluxoCalorSensivel/02_fluxocalorsensivel_semanal.png)
+
+![Fluxo de Calor Sensível Médio Mensal](resultados/FluxoCalorSensivel/03_fluxocalorsensivel_mensal.png)
+
+![Distribuição do Fluxo de Calor Sensível](resultados/FluxoCalorSensivel/04_fluxocalorsensivel_distribuicao.png)
+
+#### Principais Achados
+
+O histograma revela distribuição assimétrica à esquerda, com moda próxima a zero
+e cauda se estendendo até valores negativos elevados.
+
+### Fluxo de Calor Latente
+
+![Fluxo de Calor Latente Horário](resultados/FluxoCalorLatente/00_fluxocalorlatente_horario.png)
+
+![Fluxo de Calor Latente Médio Diário](resultados/FluxoCalorLatente/01_fluxocalorlatente_diario.png)
+
+![Fluxo de Calor Latente Médio Semanal](resultados/FluxoCalorLatente/02_fluxocalorlatente_semanal.png)
+
+![Fluxo de Calor Latente Médio Mensal](resultados/FluxoCalorLatente/03_fluxocalorlatente_mensal.png)
+
+![Distribuição do Fluxo de Calor Latente](resultados/FluxoCalorLatente/04_fluxocalorlatente_distribuicao.png)
+
+#### Principais Achados
+
+O fluxo de calor latente (evapotranspiração) é consistentemente **negativo** e apresenta a maior amplitude entre os fluxos energéticos. Os picos são mais intensos no verão, quando a combinação de alta temperatura, umidade e radiação solar favorece a evaporação. A série mensal evidencia com clareza a sazonalidade, com mínimos no inverno seco.
+
+A distribuição é assimétrica à esquerda, com concentração de valores baixos e cauda longa. Há a presença de valores extremos positivos que são provaveis erros na base de dados.
+
+Em conjunto com o fluxo de calor sensível, essa variável compõe o balanço de energia da superfície e deve ser relevante como preditor da temperatura do ar.
+
+### Vento Leste-Oeste
+
+![Vento Leste-Oeste Horário](resultados/VentoU/00_ventou_horario.png)
+
+![Vento Leste-Oeste Médio Diário](resultados/VentoU/01_ventou_diario.png)
+
+![Vento Leste-Oeste Médio Semanal](resultados/VentoU/02_ventou_semanal.png)
+
+![Vento Leste-Oeste Médio Mensal](resultados/VentoU/03_ventou_mensal.png)
+
+![Distribuição do Vento Leste-Oeste](resultados/VentoU/04_ventou_distribuicao.png)
+
+#### Principais Achados
+
+A componente U do vento oscila em torno de zero, com **leve predominância de valores negativos** (vento de leste), consistente com a circulação dos alísios e a brisa marítima predominante em Niterói. A série não apresenta tendência temporal, mas há maior variabilidade nos meses de inverno e primavera.
+
+A distribuição é centrada levemente abaixo de zero, com caudas moderadas em ambas as direções. A ausência de valores extremos muito intensos distingue essa componente da velocidade escalar do vento.
+
+### Vento Norte-Sul
+
+![Vento Norte-Sul Horário](resultados/VentoV/00_ventov_horario.png)
+
+![Vento Norte-Sul Médio Diário](resultados/VentoV/01_ventov_diario.png)
+
+![Vento Norte-Sul Médio Semanal](resultados/VentoV/02_ventov_semanal.png)
+
+![Vento Norte-Sul Médio Mensal](resultados/VentoV/03_ventov_mensal.png)
+
+![Distribuição do Vento Norte-Sul](resultados/VentoV/04_ventov_distribuicao.png)
+
+#### Principais Achados
+
+A componente V do vento também oscila em torno de zero, com comportamento mais **irregular e ruidoso** do que a componente U.
+
+A distribuição é aproximadamente simétrica, ligeiramente mais estreita do que a componente U. Os dois componentes juntos compõem o campo vetorial do vento, e sua inclusão no modelo permite capturar a direção além da intensidade.
+
+### Pressão Superficial
+
+![Pressão Superficial Horária](resultados/Pressao/00_pressao_horario.png)
+
+![Pressão Superficial Média Diária](resultados/Pressao/01_pressao_diario.png)
+
+![Pressão Superficial Média Semanal](resultados/Pressao/02_pressao_semanal.png)
+
+![Pressão Superficial Média Mensal](resultados/Pressao/03_pressao_mensal.png)
+
+![Distribuição da Pressão Superficial](resultados/Pressao/04_pressao_distribuicao.png)
+
+#### Principais Achados
+
+A pressão superficial é a variável de **menor variabilidade relativa** de toda a base: os valores mensais oscilam em uma faixa estreita, de aproximadamente 10 Pa. As séries horárias revelam um ciclo de maré barométrica de ~12 horas (duas oscilações por dia), enquanto as variações de menor frequência
+refletem a passagem de sistemas sinóticos (frentes frias e anticiclones). Resalta-se uma translação da série em 10 Pa a partir do ano de 2016
+
+A distribuição é a mais simétrica e bimodal. A baixa amplitude e a previsibilidade do ciclo diário tornam essa variável potencialmente útil como âncora temporal para o modelo LSTM.
+
+# Análises Conjuntas
+
+![Comparação Entre as Medidas de Temperatura](resultados/30_series_sobrepostas_temperaturas.png)
+
+> **Comentário:** Este gráfico demonstra a altíssima sincronia entre as três medidas. A temperatura da superfície atinge os picos mais elevados durante o dia, enquanto a temperatura do ponto de orvalho permanece consistentemente como o limite inferior, nunca ultrapassando a temperatura do ar
+
+![Componentes Médias do Vento](resultados/31_series_sobrepostas_componentes_vento.png)
+
+> **Comentário:** A sobreposição das componentes U (Leste-Oeste) e V (Norte-Sul) permite observar que a componente U apresenta maior variabilidade e picos mais intensos, indicando que os ventos que atingem Niterói possuem essa dominância na direção.
+
+![Temperatura, Umidade e Vento em Escala Comparável](resultados/32_series_padronizadas_temperatura_umidade_vento.png)
+
+> **Comentário:** Ao padronizar as variáveis, fica evidente o comportamento em "espelho" entre a umidade relativa e a Velocidade do Vento.
+
+![Radiação e Fluxos de Calor em Escala Diária](resultados/33_series_sobrepostas_radiacao_fluxos.png)
+
+> **Comentário:** O gráfico ilustra o balanço energético da superfície. Enquanto a Radiação Solar Líquida é a principal fonte de energia (positiva), os fluxos de calor latente, sensível e a radiação térmica líquida atuam majoritariamente como perda de energia da superfície para a atmosfera (valores negativos)
+
+![Dispersão: Temperatura da Superfície e Radiação Solar](resultados/22_dispersao_temperatura_superficie_radiacao.png)
+
+> **Comentário:** Confirmam uma forte relação linear positiva entre a incidência solar e o aquecimento da superfície.
+
+![Dispersão: Temperatura do Ar e Umidade Relativa](resultados/23_dispersao_temperatura_orvalho_umidade.png)
+
+> **Comentário:** O gráfico de dispersão ratifica a correlação negativa (-0,67) entre essas variáveis. Nota-se que temperaturas elevadas (acima de 30°C) raramente ocorrem em condições de umidade muito alta, o que é típico de regimes de ar mais seco ou períodos de forte radiação solar
+
+![Dispersão: Radiação Solar e Temperatura da Superfície](resultados/24_dispersao_radiacao_superficie_calor.png)
+
+![Dispersão: Precipitação Diária e Umidade Relativa](resultados/25_dispersao_umidade_chuva_temperatura.png)
+
+> **Comentário:** Este plot evidencia que eventos significativos de precipitação são fenômenos de "cauda", ocorrendo quase exclusivamente quando a umidade relativa diária está acima de 80-90%
+
+![Dispersão: Componentes do Vento e Temperatura](resultados/26_dispersao_vento_temperatura.png)
+
+> **Comentário:** A dispersão sugere que não há uma relação linear simples entre a direção do vento e a temperatura, mas permite identificar agrupamentos que podem estar associados a brisas marítimas ou frentes frias
+
+
+![Matriz de Correlação Entre as Variáveis Meteorológicas](resultados/27_matriz_correlacao.png)
+
+> **Comentário:** É o resumo estatístico da seção. Destaca-se a correlação quase perfeita (0,96) entre a temperatura do ar e a da superfície, validando esta última como o preditor mais robusto para o modelo LSTM
+. Além disso, a forte correlação entre os fluxos de calor latente e sensível (0,80) reforça a consistência física dos dados de reanálise
+
+#### Principais Achados
+
+As três séries de temperatura (ar, superfície e orvalho) evoluem de forma **altamente sincronizada**, com a temperatura da superfície apresentando maior amplitude e os valores de orvalho funcionando como piso térmico. A diferença entre a temperatura do ar e a do orvalho é um indicador direto do déficit de pressão de vapor, variando de quase zero nos dias úmidos a mais de 10 °C nos dias secos de inverno.
+
+As componentes U e V do vento mostram comportamentos **descorrelacionados entre si**, com U mais estável e V mais volátil. A série padronizada de temperatura, umidade e vento confirma a anticorrelação entre temperatura e umidade: quando a temperatura sobe (verão), a umidade relativa cai ligeiramente, e vice-versa no inverno.
+
+Radiação solar, fluxo de calor latente e fluxo sensível evoluem em **fase**, com os maiores valores no verão. A radiação térmica líquida apresenta comportamento oposto (mais negativa no inverno), completando o balanço energético da superfície.
+
+Os gráficos de dispersão confirmam relações físicas esperadas: forte correlação positiva entre temperatura do ar e da superfície (mediada pela radiação solar), correlação positiva entre temperatura do orvalho e umidade relativa, e dispersão crescente entre precipitação e umidade (eventos extremos de chuva ocorrem em ampla faixa de umidade).
+
+A **matriz de correlação** destaca as correlações mais relevantes para a modelagem: temperatura do ar correlaciona-se com temperatura da superfície (0,95), umidade relativa(-0,67), Radiação Solar Líquida(0,66), e outras. Com metor correlação com a Precipitação e o Vento Leste-Oeste.
+
+# Definição da Base de Treino e Teste
+
+![Divisão Cronológica da Base de Modelagem](resultados/29_treino_teste_temperatura.png)
+
+A base foi dividida cronologicamente em três conjuntos:
+
+| Conjunto    | Proporção | Início       |
+|:------------|:---------:|:-------------|
+| Treino      | 70%       | 31/12/2009   |
+| Validação   | 15%       | 29/06/2021   |
+| Teste       | 15%       | 16/12/2023   |
+
+A divisão cronológica 70/15/15 preserva a ordem temporal e garante que o modelo seja avaliado em um período não visto durante o treinamento. O conjunto de teste (a partir de dezembro de 2023) cobre aproximadamente dois anos e inclui ao menos um ciclo sazonal completo, o que é suficiente para avaliar a capacidade de generalização do LSTM.
+
+# Escolha dos Hiperparâmetros
+
+## Janela
+
+O hiperparâmetro **janela** define quantos passos de tempo anteriores serão usados como entrada do modelo para prever o próximo valor (ou os próximos *k* valores).
+
+![Autocorrelação da Temperatura Horária](resultados/28_autocorrelacao_temperatura (muito importante).png)
+
+O gráfico de autocorrelação evidencia uma forte estrutura de dependência temporal na série de temperatura horária, com correlações significativas se estendendo por vários dias e picos pronunciados a cada 24 horas, confirmando a sazonalidade diária. Com base nesses padrões, foram escolhidas as seguintes janelas para comparação:
+
+| Janela (h) | Justificativa                          |
+|:----------:|:---------------------------------------|
+| 24         | Captura um ciclo diário completo       |
+| 48         | Captura o efeito de dois dias anteriores |
+| 72         | Captura o efeito de três dias anteriores |
+| 96         | Captura o efeito de quatro dias anteriores |
+
+## Horizonte de Previsão (*k*)
+
+O hiperparâmetro **k** define quantos passos à frente o modelo irá prever simultaneamente. Foram considerados horizontes de até 24 horas, cobrindo desde previsões de curto prazo até um ciclo diário completo:
+
+| k (h) | Justificativa                    |
+|:-----:|:---------------------------------|
+| 6     | Previsão de 6 horas à frente     |
+| 12    | Previsão de 12 horas à frente    |
+| 18    | Previsão de 18 horas à frente    |
+| 24    | Previsão de 24 horas à frente    |
+
+# Conclusão
+
+Esta análise descritiva dos dados ERA5-Land e Meteostat para Niterói, RJ, cobriu as seguintes etapas:
+
+1. **Dados faltantes**: a base não apresentou nenhum dado faltante, resultado esperado dado o rigor do ERA5-Land como fonte de reanálise climática global.
+
+2. **Análise univariada**: para cada uma das 13 variáveis meteorológicas foram geradas séries temporais nas escalas horária, diária, semanal e mensal, além de histograma e boxplot para caracterização distribucional.
+
+3. **Análise multivariada**: séries sobrepostas por grupo temático (temperaturas, radiação, vento e pressão), matriz de correlação e gráficos de dispersão para identificar estruturas de co-variação entre as variáveis.
+
+4. **Divisão cronológica**: a base foi particionada em treino, validação e teste, preservando a ordem temporal da série.
+
+5. **Hiperparâmetros selecionados**:
+   - **Janelas candidatas**: 24 h, 48 h, 72 h e 96 h — escolhidas com base na autocorrelação horária da temperatura, que evidencia ciclos diários pronunciados e dependência de múltiplos dias.
+   - **Horizontes de previsão (k)**: 6 h, 12 h, 18 h e 24 h — cobrindo desde previsões de curtíssimo prazo até um ciclo diário completo.

@@ -1,0 +1,28 @@
+  Temperatura    TempSuperficie  RadiacaoSolarLiquida RadiacaoTermicaLiq
+ Min.   :11.61   Min.   : 1.30   Min.   : -2.865      Min.   :-172.56   
+ 1st Qu.:20.61   1st Qu.:20.10   1st Qu.:  0.000      1st Qu.: -67.03   
+ Median :23.27   Median :23.39   Median :  7.360      Median : -47.38   
+ Mean   :23.57   Mean   :24.15   Mean   :173.075      Mean   : -50.55   
+ 3rd Qu.:26.07   3rd Qu.:27.60   3rd Qu.:319.537      3rd Qu.: -29.86   
+ Max.   :41.21   Max.   :49.23   Max.   :940.380      Max.   :  13.13   
+ FluxoCalorSensivel  FluxoCalorLatente  TempOrvalho      PrecipTotal      
+ Min.   :-503.7012   Min.   :-585.60   Min.   : 4.381   Min.   : 0.00000  
+ 1st Qu.: -54.4086   1st Qu.:-160.28   1st Qu.:17.030   1st Qu.: 0.00000  
+ Median :   0.5271   Median : -30.55   Median :19.338   Median : 0.00000  
+ Mean   : -28.7391   Mean   : -93.79   Mean   :19.098   Mean   : 0.12858  
+ 3rd Qu.:   8.9753   3rd Qu.:  -9.88   3rd Qu.:21.526   3rd Qu.: 0.04778  
+ Max.   :  96.2802   Max.   : 564.48   Max.   :26.792   Max.   :27.60000  
+ VentoU_LesteOeste VentoV_NorteSul   PressaoSuperficial   VelocVento    
+ Min.   :-8.2223   Min.   :-7.9689   Min.   : 986       Min.   : 0.000  
+ 1st Qu.:-1.6697   1st Qu.: 0.4741   1st Qu.:1006       1st Qu.: 5.786  
+ Median :-0.5745   Median : 1.4076   Median :1012       Median : 8.500  
+ Mean   :-0.3550   Mean   : 1.5250   Mean   :1011       Mean   : 9.486  
+ 3rd Qu.: 0.9848   3rd Qu.: 2.4847   3rd Qu.:1017       3rd Qu.:12.450  
+ Max.   :11.0648   Max.   :10.0943   Max.   :1033       Max.   :42.550  
+ UmidadeRelativa
+ Min.   :20.75  
+ 1st Qu.:68.28  
+ Median :81.53  
+ Mean   :77.79  
+ 3rd Qu.:89.80  
+ Max.   :99.98  
