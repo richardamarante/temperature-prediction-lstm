@@ -1,0 +1,49 @@
+---
+title: "Previsão de Temperatura Horária em Niterói"
+subtitle: "Redes Neurais Recorrentes (LSTM)"
+author: "Caio Salviano (caiosalviano@id.uff.br) <br> Richard Melo (richardmelo@id.uff.br)"
+format:
+  revealjs:
+    css: "./custom.css"
+    output-file: index.html
+    embed-resources: true
+    slide-number: true
+    incremental: false
+    transition: slide
+    background-transition: fade
+    width: 1280
+    height: 720
+    margin: 0.07
+    auto-stretch: false
+    number-sections: true
+    title-slide-attributes:
+      data-background-image: "media/capa.png"
+      data-background-size: cover
+---
+
+# Introdução {.transition-slide}
+
+## Teste
+
+::: {.box-teal}
+
+Teste
+
+:::
+
+<br>
+
+::: {.box-copper}
+
+Teste
+
+:::
+
+
+# Dados {.transition-slide}
+
+# Resultados {.transition-slide}
+
+# Conclusão {.transition-slide}
+
+# Fim. {.unnumbered .final-slide}
