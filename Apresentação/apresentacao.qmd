@@ -210,11 +210,11 @@ Análise descritiva → Proposição das hipóteses → Processamento dos modelo
 
 ## Análise descritiva
 
-![](media/plot_descritivo.png){fig-align="center" width=100%}
+![](media/plot_descritivo.png){fig-align="center" width=80%}
 
 ## Autocorrelação
 
-![](media/plot_autocorrelacao.png){fig-align="center" width=100%}
+![](media/plot_autocorrelacao.png){fig-align="center" width=80%}
 
 # Resultados {.transition-slide}
 
