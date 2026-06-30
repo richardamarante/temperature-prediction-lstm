@@ -31,19 +31,13 @@ format:
 
 ::: {.box-teal}
 
-<div style="text-align: center; font-size: 1.4em;">
-  <span class="highlight-teal">O problema</span>
+<div style="text-align: center; font-size: 1.3em;">
+  <span class="highlight-teal">O Problema</span>
 </div>
 
-Saber como a temperatura vai se comportar ao longo do dia é uma informação
-simples, mas bastante relevante na rotina das pessoas — influencia desde
-a escolha de um horário para sair de casa até atividades ao ar livre,
-deslocamentos, consumo de energia e sensação de conforto térmico.
-
-Em vez de observar apenas médias mensais, semanais ou diárias, a proposta
-deste trabalho é analisar a temperatura em escala **horária**, entendendo
-se uma rede neural recorrente consegue aprender os padrões de aquecimento
-e resfriamento ao longo do tempo.
+- Previsão de temperatura horária é **simples e útil** no cotidiano
+- Influencia saídas, atividades ao ar livre, consumo de energia e conforto térmico
+- Temperatura varia ao longo do dia em padrões **recorrentes e aprendíveis**
 
 :::
 
@@ -57,17 +51,14 @@ e resfriamento ao longo do tempo.
 
 ::: {.box-copper}
 
-<div style="text-align: center; font-size: 1.4em;">
+<div style="text-align: center; font-size: 1.3em;">
   <span class="highlight-copper">O Objetivo</span>
 </div>
 
-Desenvolver uma aplicação de Redes Neurais Recorrentes do tipo
-**LSTM** (*Long Short-Term Memory*) para prever a
-**temperatura horária do ar** em Niterói, RJ.
-
-Serão utilizadas variáveis meteorológicas do **ERA5-Land**, base global
-de reanálise climática de alta resolução associada ao programa
-Copernicus e ao ECMWF.
+- Treinar modelos **LSTM** para prever a **temperatura horária do ar** em Niterói, RJ
+- Estender a análise para **temperaturas diárias** (máxima, média e mínima)
+- Comparar **26 modelos** — diferentes janelas e horizontes de previsão
+- Dados: **ERA5-Land** (Copernicus / ECMWF)
 
 :::
 
@@ -77,21 +68,27 @@ Copernicus e ao ECMWF.
 
 # Dados {.transition-slide}
 
-## Os dados
+## A Base
 
 :::: {.columns}
 
-::: {.column width="48%"}
+::: {.column width="48%" style="font-size: 0.7em;"}
 
 ::: {.box-teal}
 
-<div style="text-align: center; font-size: 1.3em;">
+<div style="text-align: center; font-size: 1.2em;">
   <span class="highlight-teal">Origem</span>
 </div>
 
-Base principal: **ERA5-Land**
+- **ERA5-Land** — base principal
+  - Reanálise climática global (ECMWF / Copernicus)
+  - Resolução: <code class="teal">~9 km</code> espacial, <code class="teal">1 h</code> temporal
+  - Alta consistência — dado de satélite + modelo físico
+  - Atraso de até **6 dias** em relação à data atual
 
-Base secundária: **Meteostat** e **NASA POWER**.
+- **Meteostat / NASA POWER** — complemento
+  - Cobrem os dias mais recentes via API
+  - Viabilizam previsões para **datas futuras**
 
 :::
 
@@ -99,45 +96,43 @@ Base secundária: **Meteostat** e **NASA POWER**.
 
 ::: {.box-teal}
 
-<div style="text-align: center; font-size: 1.3em;">
-  <span class="highlight-teal">Cobertura Regional e Temporal</span>
+<div style="text-align: center; font-size: 1.2em;">
+  <span class="highlight-teal">Cobertura</span>
 </div>
 
-**Local:** Niterói, RJ
-
-**Período:** 0h 31/12/2009 ⟶ 23h 30/06/2026
-
-**Resolução:** dados horários 
-
-**NAs**: ausentes
+- **Local:** Niterói, RJ
+- **Período:** 0h 31/12/2009 → 23h 30/06/2026
+- **NAs:** nenhum
 
 :::
-
 
 :::
 
 ::: {.column width="4%"}
-
 :::
 
 ::: {.column width="48%"}
 
 ::: {.box-copper}
 
-| Variável | Unidade | Descrição (resumida) |
-|----------|---------|----------------------|
-| **Temperatura do ar** | °C | Temperatura do ar a 2 m do solo. **Variável-alvo.** |
-| **Temperatura da superfície** | °C | Temperatura do solo; afeta o aquecimento do ar. |
-| **Radiação solar líquida** | J/m² | Radiação solar efetiva na superfície (após reflexão). |
-| **Radiação térmica líquida** | J/m² | Balanço de perda/ganho de calor, principalmente à noite. |
-| **Fluxo de calor sensível** | J/m² | Troca direta de calor solo–atmosfera. |
-| **Fluxo de calor latente** | J/m² | Energia ligada à evaporação e umidade. |
-| **Ponto de orvalho** | °C | Indicador da umidade do ar (temperatura de condensação). |
-| **Precipitação** | mm | Chuva acumulada por hora; afeta o tempo e a temperatura. |
-| **Vento E–O (10 m)** | m/s | Vento horizontal leste–oeste; relevante para cidade costeira. |
-| **Vento N–S (10 m)** | m/s | Vento horizontal norte–sul; completa a direção do vento. |
-| **Pressão atmosférica** | Pa | Pressão do ar ao nível do solo; indica mudanças meteorológicas. |
-| **Umidade relativa** | % | Proporção de vapor d'água no ar em relação ao máximo possível. |
+<div style="text-align: center; font-size: 1.2em; margin-bottom: 0.4em;">
+  <span class="highlight-copper">12 Variáveis Horárias</span>
+</div>
+
+| Variável | Unidade |
+|----------|:-------:|
+| [**Temperatura do ar** ⟵ *alvo*]{style="color:#D97A3D; font-weight:700;"} | °C |
+| Temperatura da superfície | °C |
+| Radiação solar líquida | J/m² |
+| Radiação térmica líquida | J/m² |
+| Fluxo de calor sensível | J/m² |
+| Fluxo de calor latente | J/m² |
+| Ponto de orvalho | °C |
+| Precipitação | mm |
+| Vento Leste-Oeste | m/s |
+| Vento Norte-Sul | m/s |
+| Pressão atmosférica | Pa |
+| Umidade relativa | % |
 : {.tabela-tema .tabela-scroll}
 
 :::
@@ -150,55 +145,136 @@ Base secundária: **Meteostat** e **NASA POWER**.
 
 ## Metodologia
 
-Análise descritiva → Proposição das hipóteses → Processamento dos modelos → Análises e comparações
+<div style="display: flex; justify-content: center; align-items: center; gap: 0.4em; margin-bottom: 0.8em; font-size: 0.72em;">
+  
+::: {.box-teal}
+Análise Descritiva
+:::
+
+<div style="color: #8FA8B5; font-size: 1.2em;">→</div>
+
+::: {.box-copper}
+Proposição das Hipóteses
+:::
+
+<div style="color: #8FA8B5; font-size: 1.2em;">→</div>
+
+::: {.box-teal}
+Processamento dos Modelos
+:::
+
+<div style="color: #8FA8B5; font-size: 1.2em;">→</div>
+
+::: {.box-copper}
+Análises e Comparações
+:::
+
+</div>
 
 :::: {.columns}
 
-::: {.column width="31%"}
+::: {.column width="22%"}
 
-::: {.box-copper}
+::: {.box-teal style="font-size: 0.78em;"}
 
-| Janela (h) | Justificativa |
-|------------|---------------|
-| 24 | Captura um ciclo diário completo |
-| 48 | Captura o efeito de dois dias anteriores |
-| 72 | Captura o efeito de três dias anteriores |
-| 96 | Captura o efeito de quatro dias anteriores |
-
-:::
-
-:::
-
-::: {.column width="2.5%"}
-
-:::
-
-::: {.column width="31%"}
-
-::: {.box-teal}
-
-<div style="text-align: center; font-size: 1.3em;">
-  <span class="highlight-teal">LSTM</span>
+<div style="text-align: center; font-size: 1.1em;">
+  <span class="highlight-teal">Divisão da Base</span>
 </div>
 
+| Conjunto | Prop. |
+|----------|:-----:|
+| Treino | **70%** |
+| Validação | **15%** |
+| Teste | **15%** |
+: {.tabela-tema}
+
+- Divisão **cronológica**
+
+- Cada partição cobre **todas as estações**
+
+:::
+
+:::
+
+::: {.column width="2%"}
+
+:::
+
+::: {.column width="22%"}
+
+::: {.box-copper style="font-size: 0.78em;"}
+
+<div style="text-align: center; font-size: 1.1em;">
+  <span class="highlight-copper">Janelas (h)</span>
+</div>
+
+| Janela | Captura |
+|:------:|---------|
+| **24h** | 1 dia |
+| **48h** | 2 dias |
+| **72h** | 3 dias |
+| **96h** | 4 dias |
+| **168h** | 7 dias* |
+: {.tabela-tema}
+
+<br>
+
+*somente para alvos diários
+
 :::
 
 :::
 
-::: {.column width="2.5%"}
+::: {.column width="2%"}
 
 :::
 
-::: {.column width="31%"}
+::: {.column width="22%"}
 
-::: {.box-copper}
+::: {.box-teal style="font-size: 0.69em;"}
 
-| k (h) | Justificativa |
-|-------|---------------|
-| 6 | Previsão de 6 horas à frente |
-| 12 | Previsão de 12 horas à frente |
-| 18 | Previsão de 18 horas à frente |
-| 24 | Previsão de 24 horas à frente |
+<div style="text-align: center; font-size: 1.1em;">
+  <span class="highlight-teal">Horizontes (k)</span>
+</div>
+
+| k | Alvo |
+|:-:|------|
+| 1h–24h | Horária |
+| 1–7 dias | Diárias |
+: {.tabela-tema}
+
+<br>
+
+- **26 modelos** treinados
+- Mesma arquitetura em todos
+- Isolando o efeito da janela e do *k*
+
+:::
+
+:::
+
+::: {.column width="2%"}
+
+:::
+
+::: {.column width="24%"}
+
+::: {.box-copper style="font-size: 0.78em;"}
+
+<div style="text-align: center; font-size: 1.1em;">
+  <span class="highlight-copper">Arquitetura LSTM</span>
+</div>
+
+- **64 unidades** LSTM
+- *Dropout* **0,2**
+- Otimizador **Adam**
+- Taxa de aprendizado **0,001**
+- *Early stopping* na validação
+- 3–5 épocas por modelo
+
+<br>
+
+**Métricas:** RMSE · MAE · R²
 
 :::
 
@@ -208,20 +284,151 @@ Análise descritiva → Proposição das hipóteses → Processamento dos modelo
 
 # Exploração {.transition-slide}
 
-## Análise descritiva
+## Análise Descritiva
 
-![](media/plot_descritivo.png){fig-align="center" width=80%}
+![](media/plot_descritivo.png){fig-align="center" width="80%"}
 
-## Autocorrelação
+## Autocorrelação da Temperatura
 
-![](media/plot_autocorrelacao.png){fig-align="center" width=80%}
+![](media/plot_autocorrelacao.png){fig-align="center" width="80%"}
 
 # Resultados {.transition-slide}
 
-Resultados do modelo com comparações
+## Todos os Modelos
+
+::: {.box-copper style="font-size: 0.62em;"}
+
+| Alvo | Janela (h) | Horizonte | RMSE (°C) | MAE (°C) | R² |
+|------|:----------:|:---------:|:---------:|:--------:|:--:|
+| **TempHoraria** | **72** | **1h** | **0,811** | **0,613** | **0,962** |
+| TempHoraria | 72 | 6h | 1,081 | 0,777 | 0,932 |
+| TempHoraria | 96 | 12h | 1,341 | 0,969 | 0,895 |
+| TempHoraria | 96 | 18h | 1,514 | 1,093 | 0,866 |
+| TempHoraria | 24 | 24h | 1,716 | 1,240 | 0,828 |
+| **TempMáxDiária** | **168** | **1 dia** | **2,523** | **1,953** | **0,602** |
+| TempMáxDiária | 24 | 2 dias | 3,098 | 2,509 | 0,398 |
+| TempMáxDiária | 168 | 3–7 dias | 3,3–3,6 | 2,7–3,0 | 0,19–0,31 |
+| **TempMédDiária** | **24** | **1 dia** | **1,332** | **1,020** | **0,807** |
+| TempMédDiária | 72 | 2 dias | 1,778 | 1,411 | 0,655 |
+| TempMédDiária | — | 3–7 dias | 2,0–2,2 | 1,6–1,8 | 0,47–0,56 |
+| **TempMínDiária** | **48** | **1 dia** | **1,017** | **0,796** | **0,875** |
+| TempMínDiária | 96 | 2 dias | 1,283 | 0,991 | 0,802 |
+| TempMínDiária | — | 3–7 dias | 1,5–1,8 | 1,2–1,4 | 0,62–0,72 |
+: {.tabela-tema}
+
+:::
+
+## Melhores Modelos
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+::: {.box-teal style="font-size: 0.82em;"}
+
+<div style="text-align: center; font-size: 1.2em;">
+  <span class="highlight-teal">Melhor por Variável-Alvo</span>
+</div>
+
+| Alvo | Janela | Horizonte | RMSE | R² |
+|------|:------:|:---------:|:----:|:--:|
+| Horária | 72h | 1h | **0,811** | **0,962** |
+| Máx. diária | 168h | 1 dia | 2,523 | 0,602 |
+| Méd. diária | 24h | 1 dia | 1,332 | 0,807 |
+| Mín. diária | 48h | 1 dia | **1,017** | **0,875** |
+: {.tabela-tema}
+
+:::
+
+:::
+
+::: {.column width="4%"}
+:::
+
+::: {.column width="48%"}
+
+::: {.box-copper style="font-size: 0.82em;"}
+
+<div style="text-align: center; font-size: 1.2em;">
+  <span class="highlight-copper">O que os resultados mostram</span>
+</div>
+
+- Em **todos os grupos**, o melhor modelo é sempre o de **menor horizonte** (1h ou 1 dia)
+- Desempenho se deteriora progressivamente com o aumento de *k*
+- **Temp. máxima** é a mais difícil — R² cai a ~0,19 em 7 dias
+- **Temp. mínima** é a mais previsível — R² > 0,60 mesmo em 7 dias
+- **Temp. horária (1h)** é o grande destaque: RMSE de apenas **0,81 °C**
+
+:::
+
+:::
+
+::::
+
+## Previsão vs. Real — Temperatura Horária
+
+![](media/real_vs_previsto_teste/lstm_horaria_j072_todos_k_real_vs_previsto_fim_teste.png){fig-align="center" width="80%"}
+
+## Modelos Definitivos — Horária
+
+![](media/modelos_definitivos/lstm_previsoes_futuras_melhores_modelos_horaria.png){fig-align="center" width="80%"}
+
+## Modelos Definitivos — Diárias
+
+![](media/modelos_definitivos/lstm_previsoes_futuras_melhores_modelos_diarias.png){fig-align="center" width="80%"}
+
+## Previsões Futuras
+
+![](media/previsoes_futuras/lstm_previsoes_futuras_resumo.png){fig-align="center" width="80%"}
 
 # Conclusão {.transition-slide}
 
-Conclusão com a previsao em tempo real
+## Conclusão
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+::: {.box-teal style="font-size: 0.82em;"}
+
+<div style="text-align: center; font-size: 1.2em;">
+  <span class="highlight-teal">O que foi feito</span>
+</div>
+
+- **26 modelos LSTM** treinados e comparados
+- 4 variáveis-alvo: temperatura horária, máxima, média e mínima diárias
+- Janelas de **24h a 168h**, horizontes de **1h a 7 dias**
+- Mesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros
+- Previsões geradas para **datas futuras**
+
+:::
+
+:::
+
+::: {.column width="4%"}
+:::
+
+::: {.column width="48%"}
+
+::: {.box-copper style="font-size: 0.82em;"}
+
+<div style="text-align: center; font-size: 1.2em;">
+  <span class="highlight-copper">Principais Resultados</span>
+</div>
+
+- LSTM demonstrou **excelente desempenho** na previsão horária de curto prazo — R² = **0,96**, RMSE = **0,81 °C**
+- Desempenho cai com o aumento do horizonte, em todos os alvos
+- Temperatura **mínima** é mais previsível que a **máxima** diária
+- A arquitetura conseguiu capturar **padrões sazonais** e extrapolá-los para datas futuras
+
+<br>
+
+**Trabalhos futuros:** GRU · Transformers · *Ensemble* · Previsão de precipitação
+
+:::
+
+:::
+
+::::
 
 # Fim. {.unnumbered .final-slide}

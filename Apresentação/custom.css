@@ -90,14 +90,14 @@
 
 /* ===== Caixas ===== */
 .box-teal {
-  border: 5px solid #5FA8AE;
+  border: 2px solid #5FA8AE;
   background: rgba(95, 168, 174, 0.10);
   padding: 0.7em;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
 .box-copper {
-  border: 5px solid #D97A3D;
+  border: 2px solid #D97A3D;
   background: rgba(217, 122, 61, 0.14);
   padding: 0.9em 1.1em;
   border-radius: 20px;
@@ -225,6 +225,14 @@
   display: table;
   width: 100%;
   table-layout: fixed;
+}
+
+/* ===== Linhas destacadas tabela 1 ===== */
+
+.reveal table.tabela-tema-destaque1 tbody tr:nth-child(1) td{
+  background-color: rgba(245, 197, 24, 0.18) !important;
+  color: #D97706 !important;
+  font-weight: 700;
 }
 
 /* ===== code ===== */
