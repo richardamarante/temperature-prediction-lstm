@@ -5,5 +5,40 @@
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "1.1 Teste",
     "text": "1.1 Teste\n\nTeste\n\n\n\nTeste"
+  },
+  {
+    "objectID": "Apresentação/index.html#motivação",
+    "href": "Apresentação/index.html#motivação",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "1.1 Motivação",
+    "text": "1.1 Motivação\n\n\n\n\nO problema\n\nSaber como a temperatura vai se comportar ao longo do dia é uma informação simples, mas bastante relevante na rotina das pessoas — influencia desde a escolha de um horário para sair de casa até atividades ao ar livre, deslocamentos, consumo de energia e sensação de conforto térmico.\nEm vez de observar apenas médias mensais, semanais ou diárias, a proposta deste trabalho é analisar a temperatura em escala horária, entendendo se uma rede neural recorrente consegue aprender os padrões de aquecimento e resfriamento ao longo do tempo.\n\n\n\n\n\n\nO Objetivo\n\nDesenvolver uma aplicação de Redes Neurais Recorrentes do tipo LSTM (Long Short-Term Memory) para prever a temperatura horária do ar em Niterói, RJ.\nSerão utilizadas variáveis meteorológicas do ERA5-Land, base global de reanálise climática de alta resolução associada ao programa Copernicus e ao ECMWF."
+  },
+  {
+    "objectID": "Apresentação/index.html#os-dados",
+    "href": "Apresentação/index.html#os-dados",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "2.1 Os dados",
+    "text": "2.1 Os dados\n\n\n\n\nOrigem\n\nBase principal: ERA5-Land\nBase secundária: Meteostat e NASA POWER.\n\n\n\n\nCobertura Regional e Temporal\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 ⟶ 23h 30/06/2026\nResolução: dados horários\nNAs: ausentes\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\nDescrição (resumida)\n\n\n\n\nTemperatura do ar\n°C\nTemperatura do ar a 2 m do solo. Variável-alvo.\n\n\nTemperatura da superfície\n°C\nTemperatura do solo; afeta o aquecimento do ar.\n\n\nRadiação solar líquida\nJ/m²\nRadiação solar efetiva na superfície (após reflexão).\n\n\nRadiação térmica líquida\nJ/m²\nBalanço de perda/ganho de calor, principalmente à noite.\n\n\nFluxo de calor sensível\nJ/m²\nTroca direta de calor solo–atmosfera.\n\n\nFluxo de calor latente\nJ/m²\nEnergia ligada à evaporação e umidade.\n\n\nPonto de orvalho\n°C\nIndicador da umidade do ar (temperatura de condensação).\n\n\nPrecipitação\nmm\nChuva acumulada por hora; afeta o tempo e a temperatura.\n\n\nVento E–O (10 m)\nm/s\nVento horizontal leste–oeste; relevante para cidade costeira.\n\n\nVento N–S (10 m)\nm/s\nVento horizontal norte–sul; completa a direção do vento.\n\n\nPressão atmosférica\nPa\nPressão do ar ao nível do solo; indica mudanças meteorológicas.\n\n\nUmidade relativa\n%\nProporção de vapor d’água no ar em relação ao máximo possível."
+  },
+  {
+    "objectID": "Apresentação/index.html#metodologia-1",
+    "href": "Apresentação/index.html#metodologia-1",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "3.1 Metodologia",
+    "text": "3.1 Metodologia\nAnálise descritiva → Proposição das hipóteses → Processamento dos modelos → Análises e comparações\n\n\n\n\n\n\nJanela (h)\nJustificativa\n\n\n\n\n24\nCaptura um ciclo diário completo\n\n\n48\nCaptura o efeito de dois dias anteriores\n\n\n72\nCaptura o efeito de três dias anteriores\n\n\n96\nCaptura o efeito de quatro dias anteriores\n\n\n\n\n\n\n\n\n\nLSTM\n\n\n\n\n\n\n\n\n\nk (h)\nJustificativa\n\n\n\n\n6\nPrevisão de 6 horas à frente\n\n\n12\nPrevisão de 12 horas à frente\n\n\n18\nPrevisão de 18 horas à frente\n\n\n24\nPrevisão de 24 horas à frente"
+  },
+  {
+    "objectID": "Apresentação/index.html#análise-descritiva",
+    "href": "Apresentação/index.html#análise-descritiva",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.1 Análise descritiva",
+    "text": "4.1 Análise descritiva"
+  },
+  {
+    "objectID": "Apresentação/index.html#autocorrelação",
+    "href": "Apresentação/index.html#autocorrelação",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.2 Autocorrelação",
+    "text": "4.2 Autocorrelação"
   }
 ]

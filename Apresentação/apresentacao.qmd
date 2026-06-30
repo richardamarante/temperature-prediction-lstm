@@ -23,27 +23,205 @@ format:
 
 # Introdução {.transition-slide}
 
-## Teste
+## Motivação
+
+:::: {.columns}
+
+::: {.column width="48%"}
 
 ::: {.box-teal}
 
-Teste
+<div style="text-align: center; font-size: 1.4em;">
+  <span class="highlight-teal">O problema</span>
+</div>
+
+Saber como a temperatura vai se comportar ao longo do dia é uma informação
+simples, mas bastante relevante na rotina das pessoas — influencia desde
+a escolha de um horário para sair de casa até atividades ao ar livre,
+deslocamentos, consumo de energia e sensação de conforto térmico.
+
+Em vez de observar apenas médias mensais, semanais ou diárias, a proposta
+deste trabalho é analisar a temperatura em escala **horária**, entendendo
+se uma rede neural recorrente consegue aprender os padrões de aquecimento
+e resfriamento ao longo do tempo.
+
+:::
+
+:::
+
+::: {.column width="4%"}
+
+:::
+
+::: {.column width="48%"}
+
+::: {.box-copper}
+
+<div style="text-align: center; font-size: 1.4em;">
+  <span class="highlight-copper">O Objetivo</span>
+</div>
+
+Desenvolver uma aplicação de Redes Neurais Recorrentes do tipo
+**LSTM** (*Long Short-Term Memory*) para prever a
+**temperatura horária do ar** em Niterói, RJ.
+
+Serão utilizadas variáveis meteorológicas do **ERA5-Land**, base global
+de reanálise climática de alta resolução associada ao programa
+Copernicus e ao ECMWF.
+
+:::
+
+:::
+
+::::
+
+# Dados {.transition-slide}
+
+## Os dados
+
+:::: {.columns}
+
+::: {.column width="48%"}
+
+::: {.box-teal}
+
+<div style="text-align: center; font-size: 1.3em;">
+  <span class="highlight-teal">Origem</span>
+</div>
+
+Base principal: **ERA5-Land**
+
+Base secundária: **Meteostat** e **NASA POWER**.
 
 :::
 
 <br>
 
-::: {.box-copper}
+::: {.box-teal}
 
-Teste
+<div style="text-align: center; font-size: 1.3em;">
+  <span class="highlight-teal">Cobertura Regional e Temporal</span>
+</div>
+
+**Local:** Niterói, RJ
+
+**Período:** 0h 31/12/2009 ⟶ 23h 30/06/2026
+
+**Resolução:** dados horários 
+
+**NAs**: ausentes
 
 :::
 
 
-# Dados {.transition-slide}
+:::
+
+::: {.column width="4%"}
+
+:::
+
+::: {.column width="48%"}
+
+::: {.box-copper}
+
+| Variável | Unidade | Descrição (resumida) |
+|----------|---------|----------------------|
+| **Temperatura do ar** | °C | Temperatura do ar a 2 m do solo. **Variável-alvo.** |
+| **Temperatura da superfície** | °C | Temperatura do solo; afeta o aquecimento do ar. |
+| **Radiação solar líquida** | J/m² | Radiação solar efetiva na superfície (após reflexão). |
+| **Radiação térmica líquida** | J/m² | Balanço de perda/ganho de calor, principalmente à noite. |
+| **Fluxo de calor sensível** | J/m² | Troca direta de calor solo–atmosfera. |
+| **Fluxo de calor latente** | J/m² | Energia ligada à evaporação e umidade. |
+| **Ponto de orvalho** | °C | Indicador da umidade do ar (temperatura de condensação). |
+| **Precipitação** | mm | Chuva acumulada por hora; afeta o tempo e a temperatura. |
+| **Vento E–O (10 m)** | m/s | Vento horizontal leste–oeste; relevante para cidade costeira. |
+| **Vento N–S (10 m)** | m/s | Vento horizontal norte–sul; completa a direção do vento. |
+| **Pressão atmosférica** | Pa | Pressão do ar ao nível do solo; indica mudanças meteorológicas. |
+| **Umidade relativa** | % | Proporção de vapor d'água no ar em relação ao máximo possível. |
+: {.tabela-tema .tabela-scroll}
+
+:::
+
+:::
+
+::::
+
+# Metodologia {.transition-slide}
+
+## Metodologia
+
+Análise descritiva → Proposição das hipóteses → Processamento dos modelos → Análises e comparações
+
+:::: {.columns}
+
+::: {.column width="31%"}
+
+::: {.box-copper}
+
+| Janela (h) | Justificativa |
+|------------|---------------|
+| 24 | Captura um ciclo diário completo |
+| 48 | Captura o efeito de dois dias anteriores |
+| 72 | Captura o efeito de três dias anteriores |
+| 96 | Captura o efeito de quatro dias anteriores |
+
+:::
+
+:::
+
+::: {.column width="2.5%"}
+
+:::
+
+::: {.column width="31%"}
+
+::: {.box-teal}
+
+<div style="text-align: center; font-size: 1.3em;">
+  <span class="highlight-teal">LSTM</span>
+</div>
+
+:::
+
+:::
+
+::: {.column width="2.5%"}
+
+:::
+
+::: {.column width="31%"}
+
+::: {.box-copper}
+
+| k (h) | Justificativa |
+|-------|---------------|
+| 6 | Previsão de 6 horas à frente |
+| 12 | Previsão de 12 horas à frente |
+| 18 | Previsão de 18 horas à frente |
+| 24 | Previsão de 24 horas à frente |
+
+:::
+
+:::
+
+::::
+
+# Exploração {.transition-slide}
+
+## Análise descritiva
+
+![](media/plot_descritivo.png){fig-align="center" width=100%}
+
+## Autocorrelação
+
+![](media/plot_autocorrelacao.png){fig-align="center" width=100%}
 
 # Resultados {.transition-slide}
 
+Resultados do modelo com comparações
+
 # Conclusão {.transition-slide}
+
+Conclusão com a previsao em tempo real
 
 # Fim. {.unnumbered .final-slide}

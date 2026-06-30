@@ -90,17 +90,17 @@
 
 /* ===== Caixas ===== */
 .box-teal {
-  border-left: 8px solid #5FA8AE;
+  border: 5px solid #5FA8AE;
   background: rgba(95, 168, 174, 0.10);
   padding: 0.7em;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
 .box-copper {
-  border-left: 8px solid #D97A3D;
+  border: 5px solid #D97A3D;
   background: rgba(217, 122, 61, 0.14);
   padding: 0.9em 1.1em;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
 }
 
