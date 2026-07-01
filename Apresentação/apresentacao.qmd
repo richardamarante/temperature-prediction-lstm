@@ -336,24 +336,6 @@ Análises e Comparações
 
 :::
 
-## Métricas por Horizonte e Janela
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-![](media/metricas/lstm_r2_por_k_e_Janela.png){fig-align="center" width="100%"}
-
-:::
-
-::: {.column width="50%"}
-
-![](media/metricas/lstm_rmse_por_k_e_Janela.png){fig-align="center" width="100%"}
-
-:::
-
-::::
-
 ## Melhores Modelos
 
 :::: {.columns}
