@@ -11,14 +11,14 @@
     "href": "Apresentação/index.html#motivação",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "1.1 Motivação",
-    "text": "1.1 Motivação\n\n\n\n\nO Problema\n\n\nPrevisão de temperatura horária é simples e útil no cotidiano\nInfluencia saídas, atividades ao ar livre, consumo de energia e conforto térmico\nTemperatura varia ao longo do dia em padrões recorrentes e aprendíveis\n\n\n\n\n\n\n\nO Objetivo\n\n\nTreinar modelos LSTM para prever a temperatura horária do ar em Niterói, RJ\nEstender a análise para temperaturas diárias (máxima, média e mínima)\nComparar 26 modelos — diferentes janelas e horizontes de previsão\nDados: ERA5-Land (Copernicus / ECMWF)"
+    "text": "1.1 Motivação\n\n\n\n\nO Problema\n\n\nPrevisão de temperatura horária é simples e útil no cotidiano\nInfluencia saídas, atividades ao ar livre, consumo de energia e conforto térmico\nTemperatura varia ao longo do dia em padrões recorrentes e aprendíveis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nO Objetivo\n\n\nTreinar modelos LSTM para prever a temperatura horária do ar em Niterói, RJ\nEstender os fatores que influenciam na temperaturas diárias\nComparar modelos — diferentes janelas e horizontes de previsão"
   },
   {
     "objectID": "Apresentação/index.html#os-dados",
     "href": "Apresentação/index.html#os-dados",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "2.1 Os dados",
-    "text": "2.1 Os dados\n\n\n\n\nOrigem\n\nBase principal: ERA5-Land\nBase secundária: Meteostat e NASA POWER.\n\n\n\n\nCobertura Regional e Temporal\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 ⟶ 23h 30/06/2026\nResolução: dados horários\nNAs: ausentes\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\nDescrição (resumida)\n\n\n\n\nTemperatura do ar\n°C\nTemperatura do ar a 2 m do solo. Variável-alvo.\n\n\nTemperatura da superfície\n°C\nTemperatura do solo; afeta o aquecimento do ar.\n\n\nRadiação solar líquida\nJ/m²\nRadiação solar efetiva na superfície (após reflexão).\n\n\nRadiação térmica líquida\nJ/m²\nBalanço de perda/ganho de calor, principalmente à noite.\n\n\nFluxo de calor sensível\nJ/m²\nTroca direta de calor solo–atmosfera.\n\n\nFluxo de calor latente\nJ/m²\nEnergia ligada à evaporação e umidade.\n\n\nPonto de orvalho\n°C\nIndicador da umidade do ar (temperatura de condensação).\n\n\nPrecipitação\nmm\nChuva acumulada por hora; afeta o tempo e a temperatura.\n\n\nVento E–O (10 m)\nm/s\nVento horizontal leste–oeste; relevante para cidade costeira.\n\n\nVento N–S (10 m)\nm/s\nVento horizontal norte–sul; completa a direção do vento.\n\n\nPressão atmosférica\nPa\nPressão do ar ao nível do solo; indica mudanças meteorológicas.\n\n\nUmidade relativa\n%\nProporção de vapor d’água no ar em relação ao máximo possível."
+    "text": "2.1 Os dados\n\n\n\n\nOrigem\n\n\n\n\nERA5-Land — base principal\n\nECMWF & Copernicus\nResolução espacial: ~9 km\nResolução temporal: 1 h\nSem NAs — dado de satélite + modelo físico\nAtraso de até 6 dias em relação à data atual\n\n\n\n\n\n\nMeteostat / NASA POWER — complemento\n\nCobrem os dias mais recentes via API\nViabilizam previsões para datas futuras\n\n\n\n\n\n\nCobertura\n\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 → 23h 30/06/2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\n\n\n\n\nTemperatura do ar\n°C\n\n\nTemperatura da superfície\n°C\n\n\nRadiação solar líquida\nJ/m²\n\n\nRadiação térmica líquida\nJ/m²\n\n\nFluxo de calor sensível\nJ/m²\n\n\nFluxo de calor latente\nJ/m²\n\n\nPonto de orvalho\n°C\n\n\nPrecipitação\nmm\n\n\nVento Leste-Oeste\nm/s\n\n\nVento Norte-Sul\nm/s\n\n\nPressão atmosférica\nPa\n\n\nUmidade relativa\n%"
   },
   {
     "objectID": "Apresentação/index.html#metodologia-1",
@@ -46,7 +46,7 @@
     "href": "Apresentação/index.html#a-base",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "2.1 A Base",
-    "text": "2.1 A Base\n\n\n\n\nOrigem\n\n\nERA5-Land — base principal\n\nReanálise climática global (ECMWF / Copernicus)\nResolução: ~9 km espacial, 1 h temporal\nAlta consistência — dado de satélite + modelo físico\nAtraso de até 6 dias em relação à data atual\n\nMeteostat / NASA POWER — complemento\n\nCobrem os dias mais recentes via API\nViabilizam previsões para datas futuras\n\n\n\n\n\n\nCobertura\n\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 → 23h 30/06/2026\nNAs: nenhum\n\n\n\n\n\n\n\n12 Variáveis Horárias\n\n\n\n\n\n\n\n\nVariável\nUnidade\n\n\n\n\nTemperatura do ar ⟵ alvo\n°C\n\n\nTemperatura da superfície\n°C\n\n\nRadiação solar líquida\nJ/m²\n\n\nRadiação térmica líquida\nJ/m²\n\n\nFluxo de calor sensível\nJ/m²\n\n\nFluxo de calor latente\nJ/m²\n\n\nPonto de orvalho\n°C\n\n\nPrecipitação\nmm\n\n\nVento Leste-Oeste\nm/s\n\n\nVento Norte-Sul\nm/s\n\n\nPressão atmosférica\nPa\n\n\nUmidade relativa\n%"
+    "text": "2.1 A Base\n\n\n\n\nOrigem\n\n\n\n\nERA5-Land — base principal\n\nECMWF & Copernicus\nResolução espacial: ~9 km\nResolução temporal: 1 h\nSem NAs — dado de satélite + modelo físico\nAtraso de até 6 dias em relação à data atual\n\n\n\n\n\n\nMeteostat / NASA POWER — complemento\n\nCobrem os dias mais recentes via API\nViabilizam previsões para datas futuras\n\n\n\n\n\n\nCobertura\n\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 → 23h 30/06/2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\n\n\n\n\nTemperatura do ar\n°C\n\n\nTemperatura da superfície\n°C\n\n\nRadiação solar líquida\nJ/m²\n\n\nRadiação térmica líquida\nJ/m²\n\n\nFluxo de calor sensível\nJ/m²\n\n\nFluxo de calor latente\nJ/m²\n\n\nPonto de orvalho\n°C\n\n\nPrecipitação\nmm\n\n\nVento Leste-Oeste\nm/s\n\n\nVento Norte-Sul\nm/s\n\n\nPressão atmosférica\nPa\n\n\nUmidade relativa\n%"
   },
   {
     "objectID": "Apresentação/index.html#estrutura",
@@ -117,5 +117,19 @@
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "6.1 Conclusão",
     "text": "6.1 Conclusão\n\n\n\n\nO que foi feito\n\n\n26 modelos LSTM treinados e comparados\n4 variáveis-alvo: temperatura horária, máxima, média e mínima diárias\nJanelas de 24h a 168h, horizontes de 1h a 7 dias\nMesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros\nPrevisões geradas para datas futuras\n\n\n\n\n\n\n\nPrincipais Resultados\n\n\nLSTM demonstrou excelente desempenho na previsão horária de curto prazo — R² = 0,96, RMSE = 0,81 °C\nDesempenho cai com o aumento do horizonte, em todos os alvos\nTemperatura mínima é mais previsível que a máxima diária\nA arquitetura conseguiu capturar padrões sazonais e extrapolá-los para datas futuras\n\n\nTrabalhos futuros: GRU · Transformers · Ensemble · Previsão de precipitação"
+  },
+  {
+    "objectID": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
+    "href": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.2 Autocorrelação da Temperatura Horária",
+    "text": "4.2 Autocorrelação da Temperatura Horária"
+  },
+  {
+    "objectID": "Apresentação/index.html#motivação-1",
+    "href": "Apresentação/index.html#motivação-1",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "1.2 Motivação",
+    "text": "1.2 Motivação\n\n\n\n\nO Problema\n\n\nPrevisão de temperatura horária é simples e útil no cotidiano\nInfluencia saídas, atividades ao ar livre, consumo de energia e conforto térmico\nTemperatura varia ao longo do dia em padrões recorrentes e aprendíveis\n\n\n\n\n\n\n\nO Objetivo\n\n\nTreinar modelos LSTM para prever a temperatura horária do ar em Niterói, RJ\nEstender a análise para temperaturas diárias (máxima, média e mínima)\nComparar 26 modelos — diferentes janelas e horizontes de previsão\nDados: ERA5-Land (Copernicus / ECMWF)"
   }
 ]

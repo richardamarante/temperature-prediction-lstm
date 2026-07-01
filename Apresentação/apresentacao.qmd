@@ -27,9 +27,9 @@ format:
 
 :::: {.columns}
 
-::: {.column width="48%"}
+::: {.column width="70%"}
 
-::: {.box-teal}
+::: {.box-teal style="font-size: 0.75em;"}
 
 <div style="text-align: center; font-size: 1.3em;">
   <span class="highlight-teal">O Problema</span>
@@ -43,22 +43,43 @@ format:
 
 :::
 
-::: {.column width="4%"}
+::: {.column width="5%"}
 
 :::
 
-::: {.column width="48%"}
+::: {.column width="25%"}
 
-::: {.box-copper}
+![](media/termometro.gif){width="250"}
+
+:::
+
+::::
+
+<br>
+
+:::: {.columns}
+
+::: {.column width="20%"}
+
+![](media/icon_niteroi.png){width="250"}
+
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="70%"}
+
+::: {.box-copper style="font-size: 0.75em;"}
 
 <div style="text-align: center; font-size: 1.3em;">
   <span class="highlight-copper">O Objetivo</span>
 </div>
 
 - Treinar modelos **LSTM** para prever a **temperatura horária do ar** em Niterói, RJ
-- Estender a análise para **temperaturas diárias** (máxima, média e mínima)
-- Comparar **26 modelos** — diferentes janelas e horizontes de previsão
-- Dados: **ERA5-Land** (Copernicus / ECMWF)
+- Estender os fatores que influenciam na temperaturas diárias
+- Comparar modelos — diferentes janelas e horizontes de previsão
 
 :::
 
@@ -68,23 +89,38 @@ format:
 
 # Dados {.transition-slide}
 
-## A Base
+## Os dados
 
 :::: {.columns}
 
-::: {.column width="48%" style="font-size: 0.7em;"}
+::: {.column width="48%"}
 
-::: {.box-teal}
+::: {.box-teal  style="font-size: 0.6em;"}
 
 <div style="text-align: center; font-size: 1.2em;">
   <span class="highlight-teal">Origem</span>
 </div>
 
+:::: {.columns}
+
+::: {.column width="75%"}
+
 - **ERA5-Land** — base principal
-  - Reanálise climática global (ECMWF / Copernicus)
-  - Resolução: <code class="teal">~9 km</code> espacial, <code class="teal">1 h</code> temporal
-  - Alta consistência — dado de satélite + modelo físico
+  - ECMWF & Copernicus
+  - Resolução espacial: <code class="teal">~9 km</code>
+  - Resolução temporal: <code class="teal">1 h</code>
+  - Sem NAs — dado de satélite + modelo físico
   - Atraso de até **6 dias** em relação à data atual
+
+:::
+
+::: {.column width="25%"}
+
+![](media/satellite.png){width="250"}
+
+:::
+
+::::
 
 - **Meteostat / NASA POWER** — complemento
   - Cobrem os dias mais recentes via API
@@ -94,34 +130,31 @@ format:
 
 <br>
 
-::: {.box-teal}
+::: {.box-teal style="font-size: 0.6em;"}
 
 <div style="text-align: center; font-size: 1.2em;">
   <span class="highlight-teal">Cobertura</span>
 </div>
 
 - **Local:** Niterói, RJ
+
 - **Período:** 0h 31/12/2009 → 23h 30/06/2026
-- **NAs:** nenhum
 
 :::
 
 :::
 
 ::: {.column width="4%"}
+
 :::
 
 ::: {.column width="48%"}
 
-::: {.box-copper}
-
-<div style="text-align: center; font-size: 1.2em; margin-bottom: 0.4em;">
-  <span class="highlight-copper">12 Variáveis Horárias</span>
-</div>
+::: {.box-copper style="font-size: 0.75em;"}
 
 | Variável | Unidade |
 |----------|:-------:|
-| [**Temperatura do ar** ⟵ *alvo*]{style="color:#D97A3D; font-weight:700;"} | °C |
+| [**Temperatura do ar**]{style="color:#D97A3D; font-weight:700;"} | °C |
 | Temperatura da superfície | °C |
 | Radiação solar líquida | J/m² |
 | Radiação térmica líquida | J/m² |
@@ -133,7 +166,7 @@ format:
 | Vento Norte-Sul | m/s |
 | Pressão atmosférica | Pa |
 | Umidade relativa | % |
-: {.tabela-tema .tabela-scroll}
+: {.tabela-tema .tabela-tema-destaque1}
 
 :::
 
@@ -259,7 +292,7 @@ Análises e Comparações
 
 ::: {.column width="24%"}
 
-::: {.box-copper style="font-size: 0.78em;"}
+::: {.box-copper style="font-size: 0.7em;"}
 
 <div style="text-align: center; font-size: 1.1em;">
   <span class="highlight-copper">Arquitetura LSTM</span>
@@ -288,7 +321,7 @@ Análises e Comparações
 
 ![](media/plot_descritivo.png){fig-align="center" width="80%"}
 
-## Autocorrelação da Temperatura
+## Autocorrelação da Temperatura Horária
 
 ![](media/plot_autocorrelacao.png){fig-align="center" width="80%"}
 
