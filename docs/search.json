@@ -1,31 +1,24 @@
 [
   {
-    "objectID": "Apresentação/index.html#teste",
-    "href": "Apresentação/index.html#teste",
-    "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "1.1 Teste",
-    "text": "1.1 Teste\n\nTeste\n\n\n\nTeste"
-  },
-  {
     "objectID": "Apresentação/index.html#motivação",
     "href": "Apresentação/index.html#motivação",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "1.1 Motivação",
-    "text": "1.1 Motivação\n\n\n\n\nO Problema\n\n\nPrevisão de temperatura horária é simples e útil no cotidiano\nInfluencia saídas, atividades ao ar livre, consumo de energia e conforto térmico\nTemperatura varia ao longo do dia em padrões recorrentes e aprendíveis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nO Objetivo\n\n\nTreinar modelos LSTM para prever a temperatura horária do ar em Niterói, RJ\nEstender os fatores que influenciam na temperaturas diárias\nComparar modelos — diferentes janelas e horizontes de previsão"
+    "text": "1.1 Motivação\n\n\n\n\nO Problema\n\n\nPrevisão de temperatura horária é simples e útil no cotidiano\nInfluencia saídas, atividades ao ar livre, consumo de energia e conforto térmico\nTemperatura varia ao longo do dia em padrões recorrentes e aprendíveis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nO Objetivo\n\n\nTreinar modelos LSTM para prever a temperatura horária do ar em Niterói, RJ\nComparar modelos — diferentes janelas e horizontes de previsão"
   },
   {
     "objectID": "Apresentação/index.html#os-dados",
     "href": "Apresentação/index.html#os-dados",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "2.1 Os dados",
-    "text": "2.1 Os dados\n\n\n\n\nOrigem\n\n\n\n\nERA5-Land — base principal\n\nECMWF & Copernicus\nResolução espacial: ~9 km\nResolução temporal: 1 h\nSem NAs — dado de satélite + modelo físico\nAtraso de até 6 dias em relação à data atual\n\n\n\n\n\n\nMeteostat / NASA POWER — complemento\n\nCobrem os dias mais recentes via API\nViabilizam previsões para datas futuras\n\n\n\n\n\n\nCobertura\n\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 → 23h 30/06/2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\n\n\n\n\nTemperatura do ar\n°C\n\n\nTemperatura da superfície\n°C\n\n\nRadiação solar líquida\nJ/m²\n\n\nRadiação térmica líquida\nJ/m²\n\n\nFluxo de calor sensível\nJ/m²\n\n\nFluxo de calor latente\nJ/m²\n\n\nPonto de orvalho\n°C\n\n\nPrecipitação\nmm\n\n\nVento Leste-Oeste\nm/s\n\n\nVento Norte-Sul\nm/s\n\n\nPressão atmosférica\nPa\n\n\nUmidade relativa\n%"
+    "text": "2.1 Os dados\n\n\n\n\nOrigem\n\n\n\n\nERA5-Land — base principal\n\nECMWF & Copernicus\nResolução espacial: ~9 km\nResolução temporal: 1 h\nSem NAs — dado de satélite + modelo físico\nAtraso de até 6 dias em relação à data atual\n\n\n\n\n\n\nOpen Meteo / NASA GEOS-FP — complemento\n\nCobrem os dias mais recentes via API\nViabilizam previsões para datas futuras\n\n\n\n\n\n\nCobertura\n\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 → 23h 30/06/2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\n\n\n\n\nTemperatura do ar\n°C\n\n\nTemperatura da superfície\n°C\n\n\nRadiação solar líquida\nJ/m²\n\n\nRadiação térmica líquida\nJ/m²\n\n\nFluxo de calor sensível\nJ/m²\n\n\nFluxo de calor latente\nJ/m²\n\n\nPonto de orvalho\n°C\n\n\nPrecipitação\nmm\n\n\nVento Leste-Oeste\nm/s\n\n\nVento Norte-Sul\nm/s\n\n\nPressão atmosférica\nPa\n\n\nUmidade relativa\n%"
   },
   {
     "objectID": "Apresentação/index.html#metodologia-1",
     "href": "Apresentação/index.html#metodologia-1",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "3.1 Metodologia",
-    "text": "3.1 Metodologia\n\n\nAnálise Descritiva\n\n\n→\n\n\nProposição das Hipóteses\n\n\n→\n\n\nProcessamento dos Modelos\n\n\n→\n\n\nAnálises e Comparações\n\n\n\n\n\n\nDivisão da Base\n\n\n\n\nConjunto\nProp.\n\n\n\n\nTreino\n70%\n\n\nValidação\n15%\n\n\nTeste\n15%\n\n\n\n\nDivisão cronológica\nCada partição cobre todas as estações\n\n\n\n\n\n\n\nJanelas (h)\n\n\n\n\nJanela\nCaptura\n\n\n\n\n24h\n1 dia\n\n\n48h\n2 dias\n\n\n72h\n3 dias\n\n\n96h\n4 dias\n\n\n168h\n7 dias*\n\n\n\n\n*somente para alvos diários\n\n\n\n\n\n\nHorizontes (k)\n\n\n\n\nk\nAlvo\n\n\n\n\n1h–24h\nHorária\n\n\n1–7 dias\nDiárias\n\n\n\n\n\n26 modelos treinados\nMesma arquitetura em todos\nIsolando o efeito da janela e do k\n\n\n\n\n\n\n\nArquitetura LSTM\n\n\n64 unidades LSTM\nDropout 0,2\nOtimizador Adam\nTaxa de aprendizado 0,001\nEarly stopping na validação\n3–5 épocas por modelo\n\n\nMétricas: RMSE · MAE · R²"
+    "text": "3.1 Metodologia\n\n\nAnálise Descritiva\n\n\n→\n\n\nProposição das Hipóteses\n\n\n→\n\n\nProcessamento dos Modelos\n\n\n→\n\n\nAnálises e Comparações\n\n\n\n\n\n\nDivisão da Base\n\n\n\n\nConjunto\nProp.\n\n\n\n\nTreino\n70%\n\n\nValidação\n15%\n\n\nTeste\n15%\n\n\n\n\nDivisão cronológica\nCada partição cobre todas as estações\n\n\n\n\n\n\n\nJanelas (h)\n\n\n\n\nJanela\nCaptura\n\n\n\n\n24h\n1 dia\n\n\n48h\n2 dias\n\n\n72h\n3 dias\n\n\n96h\n4 dias\n\n\n168h\n7 dias\n\n\n\n\n\n\n\n\n\nHorizontes (k)\n\n\n\n\nk\nAlvo\n\n\n\n\n1h–24h\nHorária\n\n\n\n\n\n96 modelos treinados\nMesma arquitetura em todos\nIsolando o efeito da janela e do k\n\n\n\n\n\n\n\nArquitetura LSTM\n\n\n64 unidades LSTM\nDropout 0,2\nOtimizador Adam\nTaxa de aprendizado 0,001\nEarly stopping na validação\n3–5 épocas por modelo\n\n\nMétricas: RMSE · MAE · R²"
   },
   {
     "objectID": "Apresentação/index.html#análise-descritiva",
@@ -35,53 +28,25 @@
     "text": "4.1 Análise Descritiva"
   },
   {
-    "objectID": "Apresentação/index.html#autocorrelação",
-    "href": "Apresentação/index.html#autocorrelação",
+    "objectID": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
+    "href": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "4.2 Autocorrelação",
-    "text": "4.2 Autocorrelação"
-  },
-  {
-    "objectID": "Apresentação/index.html#a-base",
-    "href": "Apresentação/index.html#a-base",
-    "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "2.1 A Base",
-    "text": "2.1 A Base\n\n\n\n\nOrigem\n\n\n\n\nERA5-Land — base principal\n\nECMWF & Copernicus\nResolução espacial: ~9 km\nResolução temporal: 1 h\nSem NAs — dado de satélite + modelo físico\nAtraso de até 6 dias em relação à data atual\n\n\n\n\n\n\nMeteostat / NASA POWER — complemento\n\nCobrem os dias mais recentes via API\nViabilizam previsões para datas futuras\n\n\n\n\n\n\nCobertura\n\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 → 23h 30/06/2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\n\n\n\n\nTemperatura do ar\n°C\n\n\nTemperatura da superfície\n°C\n\n\nRadiação solar líquida\nJ/m²\n\n\nRadiação térmica líquida\nJ/m²\n\n\nFluxo de calor sensível\nJ/m²\n\n\nFluxo de calor latente\nJ/m²\n\n\nPonto de orvalho\n°C\n\n\nPrecipitação\nmm\n\n\nVento Leste-Oeste\nm/s\n\n\nVento Norte-Sul\nm/s\n\n\nPressão atmosférica\nPa\n\n\nUmidade relativa\n%"
-  },
-  {
-    "objectID": "Apresentação/index.html#estrutura",
-    "href": "Apresentação/index.html#estrutura",
-    "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "3.1 Estrutura",
-    "text": "3.1 Estrutura\n\n\n\n\nDivisão da Base\n\n\n\n\nConjunto\nProporção\n\n\n\n\nTreino\n70%\n\n\nValidação\n15%\n\n\nTeste\n15%\n\n\n\n\n\nDivisão cronológica — sem embaralhamento\nCada partição cobre todas as estações do ano\n\n\n\n\n\n\n\nJanelas Candidatas\n\n\n\n\nJanela\nCaptura\n\n\n\n\n24h\n1 ciclo diário\n\n\n48h\n2 dias anteriores\n\n\n72h\n3 dias anteriores\n\n\n96h\n4 dias anteriores\n\n\n\n\n\nEscolha baseada na ACF da temperatura horária\nPicos a cada 24h confirmam sazonalidade diária\n\n\n\n\n\n\n\nHorizontes (k)\n\n\n\n\nk\nHorizonte\n\n\n\n\n6h\nCurto prazo\n\n\n12h\nMeio dia\n\n\n18h\nTarde/noite\n\n\n24h\nCiclo completo\n\n\n\n\n\n8 modelos treinados no total (4 janelas × 2 horizontes selecionados)\nComparados pela mesma métrica"
-  },
-  {
-    "objectID": "Apresentação/index.html#autocorrelação-da-temperatura",
-    "href": "Apresentação/index.html#autocorrelação-da-temperatura",
-    "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "4.2 Autocorrelação da Temperatura",
-    "text": "4.2 Autocorrelação da Temperatura"
-  },
-  {
-    "objectID": "Apresentação/index.html#section",
-    "href": "Apresentação/index.html#section",
-    "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "3.1 ",
-    "text": "3.1 \n\n\n📊 Análise Descritiva\n\n\n→\n\n\n🔬 Proposição das Hipóteses\n\n\n→\n\n\n⚙️ Processamento dos Modelos\n\n\n→\n\n\n📈 Análises e Comparações\n\n\n\n\n\n\nDivisão da Base\n\n\n\n\nConjunto\nProporção\n\n\n\n\nTreino\n70%\n\n\nValidação\n15%\n\n\nTeste\n15%\n\n\n\n\n\nDivisão cronológica — sem embaralhamento\nCada partição cobre todas as estações do ano\n\n\n\n\n\n\n\nJanelas Candidatas\n\n\n\n\nJanela\nCaptura\n\n\n\n\n24h\n1 ciclo diário\n\n\n48h\n2 dias anteriores\n\n\n72h\n3 dias anteriores\n\n\n96h\n4 dias anteriores\n\n\n\n\n\nEscolha baseada na ACF da temperatura horária\nPicos a cada 24h confirmam sazonalidade diária\n\n\n\n\n\n\n\nHorizontes (k)\n\n\n\n\nk\nHorizonte\n\n\n\n\n6h\nCurto prazo\n\n\n12h\nMeio dia\n\n\n18h\nTarde/noite\n\n\n24h\nCiclo completo\n\n\n\n\n\n8 modelos treinados no total (4 janelas × 2 horizontes selecionados)\nComparados pela mesma métrica"
+    "section": "4.2 Autocorrelação da Temperatura Horária",
+    "text": "4.2 Autocorrelação da Temperatura Horária"
   },
   {
     "objectID": "Apresentação/index.html#todos-os-modelos",
     "href": "Apresentação/index.html#todos-os-modelos",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "5.1 Todos os Modelos",
-    "text": "5.1 Todos os Modelos\n\n\n\n\n\n\n\n\n\n\n\n\nAlvo\nJanela (h)\nHorizonte\nRMSE (°C)\nMAE (°C)\nR²\n\n\n\n\nTempHoraria\n72\n1h\n0,811\n0,613\n0,962\n\n\nTempHoraria\n72\n6h\n1,081\n0,777\n0,932\n\n\nTempHoraria\n96\n12h\n1,341\n0,969\n0,895\n\n\nTempHoraria\n96\n18h\n1,514\n1,093\n0,866\n\n\nTempHoraria\n24\n24h\n1,716\n1,240\n0,828\n\n\nTempMáxDiária\n168\n1 dia\n2,523\n1,953\n0,602\n\n\nTempMáxDiária\n24\n2 dias\n3,098\n2,509\n0,398\n\n\nTempMáxDiária\n168\n3–7 dias\n3,3–3,6\n2,7–3,0\n0,19–0,31\n\n\nTempMédDiária\n24\n1 dia\n1,332\n1,020\n0,807\n\n\nTempMédDiária\n72\n2 dias\n1,778\n1,411\n0,655\n\n\nTempMédDiária\n—\n3–7 dias\n2,0–2,2\n1,6–1,8\n0,47–0,56\n\n\nTempMínDiária\n48\n1 dia\n1,017\n0,796\n0,875\n\n\nTempMínDiária\n96\n2 dias\n1,283\n0,991\n0,802\n\n\nTempMínDiária\n—\n3–7 dias\n1,5–1,8\n1,2–1,4\n0,62–0,72"
+    "text": "5.1 Todos os Modelos\n\n\n\n\n\n\n\n\n\n\n\n\nAlvo\nJanela (h)\nHorizonte\nRMSE (°C)\nMAE (°C)\nR²\n\n\n\n\nTempHoraria\n72\n1h\n0,811\n0,613\n0,962\n\n\nTempHoraria\n72\n6h\n1,081\n0,777\n0,932\n\n\nTempHoraria\n96\n12h\n1,341\n0,969\n0,895\n\n\nTempHoraria\n96\n18h\n1,514\n1,093\n0,866\n\n\nTempHoraria\n24\n24h\n1,716\n1,240\n0,828"
   },
   {
     "objectID": "Apresentação/index.html#melhores-modelos",
     "href": "Apresentação/index.html#melhores-modelos",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "5.2 Melhores Modelos",
-    "text": "5.2 Melhores Modelos\n\n\n\n\nMelhor por Variável-Alvo\n\n\n\n\nAlvo\nJanela\nHorizonte\nRMSE\nR²\n\n\n\n\nHorária\n72h\n1h\n0,811\n0,962\n\n\nMáx. diária\n168h\n1 dia\n2,523\n0,602\n\n\nMéd. diária\n24h\n1 dia\n1,332\n0,807\n\n\nMín. diária\n48h\n1 dia\n1,017\n0,875\n\n\n\n\n\n\n\n\n\nO que os resultados mostram\n\n\nEm todos os grupos, o melhor modelo é sempre o de menor horizonte (1h ou 1 dia)\nDesempenho se deteriora progressivamente com o aumento de k\nTemp. máxima é a mais difícil — R² cai a ~0,19 em 7 dias\nTemp. mínima é a mais previsível — R² &gt; 0,60 mesmo em 7 dias\nTemp. horária (1h) é o grande destaque: RMSE de apenas 0,81 °C"
+    "text": "5.2 Melhores Modelos\n\n\n\n\nMelhor Modelo — Temperatura Horária\n\n\n\n\nAlvo\nJanela\nHorizonte\nRMSE\nR²\n\n\n\n\nHorária\n72h\n1h\n0,811\n0,962\n\n\n\n\n\n\n\n\n\nO que os resultados mostram\n\n\nO melhor modelo é sempre o de menor horizonte (1h)\nDesempenho se deteriora progressivamente com o aumento de k\nTemp. horária (1h) é o grande destaque: RMSE de apenas 0,81 °C"
   },
   {
     "objectID": "Apresentação/index.html#previsão-vs.-real-temperatura-horária",
@@ -98,38 +63,17 @@
     "text": "5.4 Modelos Definitivos — Horária"
   },
   {
-    "objectID": "Apresentação/index.html#modelos-definitivos-diárias",
-    "href": "Apresentação/index.html#modelos-definitivos-diárias",
-    "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.5 Modelos Definitivos — Diárias",
-    "text": "5.5 Modelos Definitivos — Diárias"
-  },
-  {
     "objectID": "Apresentação/index.html#previsões-futuras",
     "href": "Apresentação/index.html#previsões-futuras",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.6 Previsões Futuras",
-    "text": "5.6 Previsões Futuras"
+    "section": "5.5 Previsões Futuras",
+    "text": "5.5 Previsões Futuras"
   },
   {
     "objectID": "Apresentação/index.html#conclusão-1",
     "href": "Apresentação/index.html#conclusão-1",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "6.1 Conclusão",
-    "text": "6.1 Conclusão\n\n\n\n\nO que foi feito\n\n\n26 modelos LSTM treinados e comparados\n4 variáveis-alvo: temperatura horária, máxima, média e mínima diárias\nJanelas de 24h a 168h, horizontes de 1h a 7 dias\nMesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros\nPrevisões geradas para datas futuras\n\n\n\n\n\n\n\nPrincipais Resultados\n\n\nLSTM demonstrou excelente desempenho na previsão horária de curto prazo — R² = 0,96, RMSE = 0,81 °C\nDesempenho cai com o aumento do horizonte, em todos os alvos\nTemperatura mínima é mais previsível que a máxima diária\nA arquitetura conseguiu capturar padrões sazonais e extrapolá-los para datas futuras\n\n\nTrabalhos futuros: GRU · Transformers · Ensemble · Previsão de precipitação"
-  },
-  {
-    "objectID": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
-    "href": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
-    "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "4.2 Autocorrelação da Temperatura Horária",
-    "text": "4.2 Autocorrelação da Temperatura Horária"
-  },
-  {
-    "objectID": "Apresentação/index.html#motivação-1",
-    "href": "Apresentação/index.html#motivação-1",
-    "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "1.2 Motivação",
-    "text": "1.2 Motivação\n\n\n\n\nO Problema\n\n\nPrevisão de temperatura horária é simples e útil no cotidiano\nInfluencia saídas, atividades ao ar livre, consumo de energia e conforto térmico\nTemperatura varia ao longo do dia em padrões recorrentes e aprendíveis\n\n\n\n\n\n\n\nO Objetivo\n\n\nTreinar modelos LSTM para prever a temperatura horária do ar em Niterói, RJ\nEstender a análise para temperaturas diárias (máxima, média e mínima)\nComparar 26 modelos — diferentes janelas e horizontes de previsão\nDados: ERA5-Land (Copernicus / ECMWF)"
+    "text": "6.1 Conclusão\n\n\n\n\nO que foi feito\n\n\n96 modelos LSTM treinados e comparados\nVariável-alvo: temperatura horária\nJanelas de 24h a 168h, horizontes de 1h a 24h\nMesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros\nPrevisões geradas para datas futuras\n\n\n\n\n\n\n\nPrincipais Resultados\n\n\nLSTM demonstrou excelente desempenho na previsão horária de curto prazo — R² = 0,96, RMSE = 0,81 °C\nDesempenho cai com o aumento do horizonte\nA arquitetura conseguiu capturar padrões sazonais e extrapolá-los para horários futuros"
   }
 ]
