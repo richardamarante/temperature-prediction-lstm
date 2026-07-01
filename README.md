@@ -38,7 +38,7 @@ Além da série horária, o mesmo framework foi aplicado a três agregações di
 |----------|-----------|
 | **Fonte principal** | [ERA5-Land — Copernicus Climate Data Store](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land) |
 | **Fontes complementares** | Meteostat API, NASA POWER |
-| **Cobertura** | Niterói, RJ — 0h 31/12/2009 → 23h 30/06/2026 |
+| **Cobertura** | Niterói, RJ — 0h 31/12/2009 → 0h 01/07/2026 |
 | **Resolução** | Horária |
 | **Variáveis** | 12 variáveis meteorológicas numéricas contínuas |
 | **Dados faltantes** | Nenhum |
@@ -70,11 +70,11 @@ Divisão **cronológica** — sem embaralhamento, preservando a ordem temporal d
 
 ### Hiperparâmetros Avaliados
 
-| | Temperatura Horária | Temperaturas Diárias |
-|---|---|---|
-| **Janelas** | 24h, 48h, 72h, 96h | 24h, 48h, 72h, 96h, 168h |
-| **Horizontes (k)** | 1h, 6h, 12h, 18h, 24h | 1 a 7 dias |
-| **Total de modelos** | 5 | 21 (7 × 3 alvos) |
+| | Temperatura Horária |
+|---|---|
+| **Janelas** | 24h, 48h, 72h, 96h |
+| **Horizontes (k)** | 1h a 24h |
+| **Total de modelos** | 96 |
 
 **Total: 26 modelos treinados e comparados.**
 
@@ -88,23 +88,10 @@ Divisão **cronológica** — sem embaralhamento, preservando a ordem temporal d
 
 ---
 
-## 📊 Resultados
-
-### Melhores Modelos por Variável-Alvo
-
-| Alvo | Janela | Horizonte | RMSE (°C) | R² |
-|------|:------:|:---------:|:---------:|:--:|
-| Temperatura horária | 72h | 1h à frente | **0,811** | **0,962** |
-| Temperatura máxima diária | 168h | 1 dia à frente | 2,523 | 0,602 |
-| Temperatura média diária | 24h | 1 dia à frente | 1,332 | 0,807 |
-| Temperatura mínima diária | 48h | 1 dia à frente | **1,017** | **0,875** |
-
-### Principais Achados
+## Principais Achados
 
 - A **temperatura horária com 1h de horizonte** foi o melhor resultado geral — R² de **0,96** e RMSE de apenas **0,81 °C**
 - O desempenho se deteriora progressivamente com o aumento do horizonte de previsão, em todos os alvos
-- A **temperatura máxima diária** é o alvo mais difícil (R² cai a ~0,19 em 7 dias), provavelmente pela maior influência de eventos meteorológicos pontuais
-- A **temperatura mínima diária** é a mais previsível — mantém R² > 0,60 mesmo em 7 dias à frente, associada ao processo de resfriamento noturno mais regular
 - Em todos os grupos, o **menor horizonte** (1h ou 1 dia) produziu o melhor modelo
 
 ---
