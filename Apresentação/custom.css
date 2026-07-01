@@ -32,13 +32,13 @@
   line-height: 1.2;
 }
 #title-slide .subtitle {
-  color: #82A8C2;
+  color: #6FB8DE;
   font-size: 1.2em;
   font-weight: 350;
   margin-top: 0.4em;
 }
 #title-slide .author {
-  color: #D9A867;
+  color: #B8C2CC;
   font-size: 0.7em;
   margin-top: 1em;
 }
@@ -47,17 +47,17 @@
 .reveal h1 {
   font-size: 2.4em;
   font-weight: 800;
-  color: #E8A552;
+  color: #E6EAEE;
 }
 .reveal h2 {
   font-size: 1.7em;
   font-weight: 700;
-  color: #5AA0D6;
+  color: #3FB0E8;
 }
 .reveal h3 {
   font-size: 1.3em;
   font-weight: 600;
-  color: #E8A552;
+  color: #E6EAEE;
 }
 
 /* ===== Slide de transição ===== */
@@ -85,28 +85,28 @@
 
 /* ===== Listas ===== */
 .reveal ul li::marker {
-  color: #E8A552;
+  color: #E6EAEE;
 }
 
 /* ===== Caixas ===== */
 .box-teal {
-  border: 2px solid #5AA0D6;
-  background: rgba(90, 160, 214, 0.10);
+  border: 2px solid #3FB0E8;
+  background: rgba(63, 176, 232, 0.10);
   padding: 0.7em;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
 .box-copper {
-  border: 2px solid #D9973F;
-  background: rgba(217, 151, 63, 0.14);
+  border: 2px solid #9AA5AF;
+  background: rgba(154, 165, 175, 0.14);
   padding: 0.9em 1.1em;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
 }
 
 /* ===== Destaques ===== */
-.highlight-teal { color: #7EC8E8; font-weight: 700; }
-.highlight-copper { color: #E8A552; font-weight: 700; }
+.highlight-teal { color: #9BDFFA; font-weight: 700; }
+.highlight-copper { color: #E6EAEE; font-weight: 700; }
 
 /* ===== Glass Referencia ===== */
 .reveal .slides section.glass {
@@ -148,12 +148,12 @@
 
 /* ===== Tema: cabeçalho ===== */
 .reveal table.tabela-tema thead th {
-  background-color: #5AA0D6 !important;
+  background-color: #3FB0E8 !important;
   color: #08141B !important;
   font-weight: 700;
   padding: 10px;
   text-align: left;
-  border-bottom: 3px solid #D9973F;
+  border-bottom: 3px solid #9AA5AF;
   position: sticky;
   top: 0;
   z-index: 1;
@@ -175,14 +175,14 @@
 }
 
 .reveal table.tabela-tema tbody tr:hover {
-  background-color: rgba(90, 160, 214, 0.12);
+  background-color: rgba(63, 176, 232, 0.12);
   transition: background-color 0.2s;
 }
 
 /* primeira coluna em cobre monoespaçado */
 .reveal table.tabela-tema tbody td:first-child {
   font-weight: 600;
-  color: #E8A552;
+  color: #E6EAEE;
   font-family: monospace;
 }
 
@@ -204,7 +204,7 @@
   overflow-y: auto;
   width: 100%;
   scrollbar-width: thin;
-  scrollbar-color: #5AA0D6 #0E1820;
+  scrollbar-color: #3FB0E8 #0E1820;
 }
 
 .tabela-scroll tbody::-webkit-scrollbar {
@@ -217,7 +217,7 @@
 }
 
 .tabela-scroll tbody::-webkit-scrollbar-thumb {
-  background: #5AA0D6;
+  background: #3FB0E8;
   border-radius: 4px;
 }
 
@@ -230,21 +230,21 @@
 /* ===== Linhas destacadas tabela 1 ===== */
 
 .reveal table.tabela-tema-destaque1 tbody tr:nth-child(1) td{
-  background-color: rgba(232, 165, 82, 0.18) !important;
-  color: #E8A552 !important;
+  background-color: rgba(230, 234, 238, 0.18) !important;
+  color: #E6EAEE !important;
   font-weight: 700;
 }
 
 /* ===== code ===== */
 code.copper {
-  background: rgba(217, 151, 63, 0.15);
-  color: #E8A552;
+  background: rgba(154, 165, 175, 0.15);
+  color: #E6EAEE;
   padding: 2px 6px;
   border-radius: 4px;
 }
 code.teal {
-  background: rgba(90, 160, 214, 0.15);
-  color: #7EC8E8;
+  background: rgba(63, 176, 232, 0.15);
+  color: #9BDFFA;
   padding: 2px 6px;
   border-radius: 4px;
 }
