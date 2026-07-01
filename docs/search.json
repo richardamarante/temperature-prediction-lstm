@@ -45,29 +45,29 @@
     "objectID": "Apresentação/index.html#melhores-modelos",
     "href": "Apresentação/index.html#melhores-modelos",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.2 Melhores Modelos",
-    "text": "5.2 Melhores Modelos\n\n\n\n\nMelhor Modelo — Temperatura Horária\n\n\n\n\nAlvo\nJanela\nHorizonte\nRMSE\nR²\n\n\n\n\nHorária\n72h\n1h\n0,811\n0,962\n\n\n\n\n\n\n\n\n\nO que os resultados mostram\n\n\nO melhor modelo é sempre o de menor horizonte (1h)\nDesempenho se deteriora progressivamente com o aumento de k\nTemp. horária (1h) é o grande destaque: RMSE de apenas 0,81 °C"
+    "section": "5.3 Melhores Modelos",
+    "text": "5.3 Melhores Modelos\n\n\n\n\nMelhor Modelo — Temperatura Horária\n\n\n\n\nAlvo\nJanela\nHorizonte\nRMSE\nR²\n\n\n\n\nHorária\n72h\n1h\n0,811\n0,962\n\n\n\n\n\n\n\n\n\nO que os resultados mostram\n\n\nO melhor modelo é sempre o de menor horizonte (1h)\nDesempenho se deteriora progressivamente com o aumento de k\nTemp. horária (1h) é o grande destaque: RMSE de apenas 0,81 °C"
   },
   {
     "objectID": "Apresentação/index.html#previsão-vs.-real-temperatura-horária",
     "href": "Apresentação/index.html#previsão-vs.-real-temperatura-horária",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.3 Previsão vs. Real — Temperatura Horária",
-    "text": "5.3 Previsão vs. Real — Temperatura Horária"
+    "section": "5.4 Previsão vs. Real — Temperatura Horária",
+    "text": "5.4 Previsão vs. Real — Temperatura Horária"
   },
   {
     "objectID": "Apresentação/index.html#modelos-definitivos-horária",
     "href": "Apresentação/index.html#modelos-definitivos-horária",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.4 Modelos Definitivos — Horária",
-    "text": "5.4 Modelos Definitivos — Horária"
+    "section": "5.5 Modelos Definitivos — Horária",
+    "text": "5.5 Modelos Definitivos — Horária"
   },
   {
     "objectID": "Apresentação/index.html#previsões-futuras",
     "href": "Apresentação/index.html#previsões-futuras",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.5 Previsões Futuras",
-    "text": "5.5 Previsões Futuras"
+    "section": "5.6 Previsões Futuras",
+    "text": "5.6 Previsões Futuras"
   },
   {
     "objectID": "Apresentação/index.html#conclusão-1",
@@ -75,5 +75,12 @@
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "6.1 Conclusão",
     "text": "6.1 Conclusão\n\n\n\n\nO que foi feito\n\n\n96 modelos LSTM treinados e comparados\nVariável-alvo: temperatura horária\nJanelas de 24h a 168h, horizontes de 1h a 24h\nMesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros\nPrevisões geradas para datas futuras\n\n\n\n\n\n\n\nPrincipais Resultados\n\n\nLSTM demonstrou excelente desempenho na previsão horária de curto prazo — R² = 0,96, RMSE = 0,81 °C\nDesempenho cai com o aumento do horizonte\nA arquitetura conseguiu capturar padrões sazonais e extrapolá-los para horários futuros"
+  },
+  {
+    "objectID": "Apresentação/index.html#métricas-por-horizonte-e-janela",
+    "href": "Apresentação/index.html#métricas-por-horizonte-e-janela",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "5.2 Métricas por Horizonte e Janela",
+    "text": "5.2 Métricas por Horizonte e Janela"
   }
 ]
