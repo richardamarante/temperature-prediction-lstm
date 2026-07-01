@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Caio Vinicius Araujo de Oliveira Salviano (223054059)">
+<meta name="author" content="Richard Amarante Melo (123054005)">
+<meta name="dcterms.date" content="2026-01-07">
+
+<title>Análise Descritiva — Previsão de Temperatura Horária em Niterói</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5c32f0cd6b873ac8221455bcffe1dcc1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="analise_descritiva.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análise Descritiva — Previsão de Temperatura Horária em Niterói</h1>
+<p class="subtitle lead">Redes Neurais Recorrentes (LSTM) aplicadas a dados ERA5-Land</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Autores</div>
+  <div class="quarto-title-meta-heading">Afiliação</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Caio Vinicius Araujo de Oliveira Salviano (223054059) </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Universidade Federal Fluminense
+          </p>
+      </div>
+    <div class="quarto-title-meta-contents">
+    <p class="author">Richard Amarante Melo (123054005) </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">01/07/2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introdução" class="level1">
+<h1>Introdução</h1>
+<p>Este relatório apresenta a análise descritiva dos dados meteorológicos horários obtidos para o município de Niterói, RJ, com o objetivo de prever a <strong>temperatura horária do ar</strong> utilizando Redes Neurais Recorrentes do tipo LSTM (<em>Long Short-Term Memory</em>).</p>
+<p>Os dados são provenientes de duas fontes:</p>
+<ul>
+<li><strong>ERA5-Land</strong> (até 02/06/2026): reanálise climática global de alta resolução (aproximadamente 9 km), produzida pelo ECMWF em parceria com o programa Copernicus, com cobertura histórica em resolução horária.</li>
+<li><strong>Meteostat</strong> (a partir de 03/06/2026): dados obtidos via API, utilizados para complementar a série com observações recentes.</li>
+</ul>
+<p>Todas as covariáveis são numéricas, e a base completa possui resolução temporal horária.</p>
+</section>
+<section id="dados-faltantes" class="level1">
+<h1>Dados Faltantes</h1>
+<p>A base não apresenta nenhum dado faltante.</p>
+<p>Por se tratar de dados de satélite e reanálise climática, a cobertura temporal é praticamente integral — característica esperada de uma fonte como o ERA5-Land, que é referência global em análise climática e preenche eventuais lacunas observacionais por meio de modelos físico-matemáticos.</p>
+</section>
+<section id="análise-descritiva-univariada" class="level1">
+<h1>Análise Descritiva Univariada</h1>
+<p>A seguir são apresentadas as séries temporais de todas as variáveis meteorológicas nas agregações horárias, diárias, semanais e mensais.</p>
+<p>A visualização em múltiplas escalas temporais permite identificar padrões de curto e longo prazo, sazonalidades e possíveis anomalias em cada variável.</p>
+<section id="variável-alvo-temperatura-do-ar" class="level2">
+<h2 class="anchored" data-anchor-id="variável-alvo-temperatura-do-ar">Variável-Alvo: Temperatura do Ar</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Temperatura/00_temperatura_horaria.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura do Ar Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Temperatura/01_temperatura_media_diaria.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura Média Diária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Temperatura/02_temperatura_media_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura Média Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Temperatura/03_temperatura_media_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura Média Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Temperatura/04_temperatura_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Temperatura</figcaption>
+</figure>
+</div>
+<section id="principais-achados" class="level3">
+<h3 class="anchored" data-anchor-id="principais-achados">Principais Achados</h3>
+<p>As séries horárias e diárias revelam uma <strong>sazonalidade anual muito pronunciada</strong>: picos de temperatura (próximos a 40 °C) ocorrem sistematicamente no verão (dezembro–fevereiro), enquanto os valores mínimos (abaixo de 15 °C) concentram-se no inverno (junho–agosto).</p>
+<p>Na escala horária, a amplitude diária é elevada — chegando a 15–20 °C entre a madrugada e a tarde —, o que reforça a importância de uma janela de entrada suficientemente longa para o modelo LSTM.</p>
+<p>Na escala mensal, a temperatura média oscila entre aproximadamente 20 °C (inverno) e 28 °C (verão), sem tendência de aquecimento visível ao longo dos 17 anos da série.</p>
+<p>O histograma mostra distribuição <strong>ligeiramente assimétrica à direita</strong>, com moda em torno de 24–25 °C e cauda superior estendida até ~40 °C. O boxplot confirma a ausência de outliers extremos inferiores, mas evidencia alguns pontos acima de 38 °C, provavelmente associados a ondas de calor no verão.</p>
+</section>
+</section>
+<section id="covariáveis" class="level2">
+<h2 class="anchored" data-anchor-id="covariáveis">Covariáveis</h2>
+<section id="umidade-relativa" class="level3">
+<h3 class="anchored" data-anchor-id="umidade-relativa">Umidade Relativa</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/UmidadRel/00_umidade_relativa_horaria.png" class="img-fluid figure-img"></p>
+<figcaption>Umidade Relativa Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/UmidadRel/01_umidade_relativa_media_diaria.png" class="img-fluid figure-img"></p>
+<figcaption>Umidade Relativa Média Diária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/UmidadRel/02_umidade_relativa_media_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Umidade Relativa Média Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/UmidadRel/03_umidade_relativa_media_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Umidade Relativa Média Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/UmidadRel/04_umidadrel_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Umidade Relativa</figcaption>
+</figure>
+</div>
+<section id="principais-achados-1" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-1">Principais Achados</h4>
+<p>A umidade relativa mantém-se <strong>persistentemente elevada</strong> ao longo de toda a série, com valores horários raramente abaixo de 40% e mediana próxima a 80%. Na escala mensal, oscila entre ~70% (meses mais secos de inverno) e ~87% (verão/outono), sem tendência temporal clara.</p>
+<p>A distribuição é <strong>assimétrica à esquerda</strong> (cauda inferior), com a grande maioria das observações concentradas entre 70% e 100%. Isso indica que Niterói raramente experimenta condições de ar seco, o que é esperado para uma cidade litorânea. O comportamento é inversamente correlacionado com a temperatura, conforme evidenciado nas análises conjuntas.</p>
+</section>
+</section>
+<section id="precipitação" class="level3">
+<h3 class="anchored" data-anchor-id="precipitação">Precipitação</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Precipitacao/00_precipitacao_horaria.png" class="img-fluid figure-img"></p>
+<figcaption>Precipitação Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Precipitacao/01_precipitacao_total_diaria.png" class="img-fluid figure-img"></p>
+<figcaption>Precipitação Acumulada Diária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Precipitacao/02_precipitacao_total_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Precipitação Acumulada Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Precipitacao/03_precipitacao_total_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Precipitação Acumulada Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Precipitacao/04_precipitacao_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Precipitação</figcaption>
+</figure>
+</div>
+<section id="principais-achados-2" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-2">Principais Achados</h4>
+<p>A precipitação apresenta o padrão <strong>mais singular</strong> de todas as variáveis: a esmagadora maioria das observações horárias é zero, com eventos intensos e pontuais que chegam a superar 10 mm/h. O histograma confirma essa característica com distribuição fortemente concentrada em zero e cauda extremamente longa à direita.</p>
+<p>Na escala diária e semanal, destacam-se eventos extremos — dias com acumulado superior a 50 mm aparecem em vários anos, com um pico notável próximo a 150 mm/dia em 2022. Na escala mensal, os meses de verão (especialmente novembro a março) concentram os maiores volumes, enquanto o inverno tende a ser significativamente mais seco, refletindo o regime tropical/subtropical da região.</p>
+</section>
+</section>
+<section id="velocidade-do-vento" class="level3">
+<h3 class="anchored" data-anchor-id="velocidade-do-vento">Velocidade do Vento</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VelocVento/00_velocidade_vento_horaria.png" class="img-fluid figure-img"></p>
+<figcaption>Velocidade do Vento Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VelocVento/01_velocidade_vento_media_diaria.png" class="img-fluid figure-img"></p>
+<figcaption>Velocidade Média Diária do Vento</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VelocVento/02_velocidade_vento_media_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Velocidade Média Semanal do Vento</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VelocVento/03_velocidade_vento_media_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Velocidade Média Mensal do Vento</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VelocVento/04_velocvento_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Velocidade do Vento</figcaption>
+</figure>
+</div>
+<section id="principais-achados-3" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-3">Principais Achados</h4>
+<p>A velocidade do vento horária varia de 0 a cerca de 40 m/s, com a série apresentando <strong>alta variabilidade intradiária</strong> e alguns picos extremos isolados que podem corresponder a eventos convectivos ou rajadas. A escala diária suaviza esse ruído e revela um padrão de variação sazonal moderado, com ventos ligeiramente mais intensos no inverno e primavera.</p>
+<p>O histograma mostra distribuição <strong>assimétrica à direita</strong>, típica de séries de velocidade de vento, com moda próxima a 5–8 m/s e cauda estendida. O boxplot evidencia vários outliers superiores, consistentes com os picos observados na série horária.</p>
+</section>
+</section>
+<section id="temperatura-da-superfície" class="level3">
+<h3 class="anchored" data-anchor-id="temperatura-da-superfície">Temperatura da Superfície</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempSuperficie/00_tempsuperficie_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura da Superfície Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempSuperficie/01_tempsuperficie_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura da Superfície Média Diária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempSuperficie/02_tempsuperficie_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura da Superfície Média Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempSuperficie/03_tempsuperficie_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura da Superfície Média Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempSuperficie/04_tempsuperficie_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Temperatura da Superfície</figcaption>
+</figure>
+</div>
+<section id="principais-achados-4" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-4">Principais Achados</h4>
+<p>A temperatura da superfície segue o mesmo padrão sazonal da temperatura do ar, porém com <strong>amplitudes consideravelmente maiores</strong>: os picos chegam a valores próximos de 50 °C nas séries horárias de verão, enquanto os mínimos ficam em torno de 10–12 °C no inverno. Essa diferença em relação à temperatura do ar reflete o aquecimento radiativo direto da superfície terrestre.</p>
+<p>A distribuição é <strong>mais larga</strong> do que a da temperatura do ar, com maior dispersão nos valores altos. Isso sugere que a superfície é mais sensível às variações de radiação solar, tornando essa variável um preditor relevante para o modelo.</p>
+</section>
+</section>
+<section id="temperatura-do-ponto-de-orvalho" class="level3">
+<h3 class="anchored" data-anchor-id="temperatura-do-ponto-de-orvalho">Temperatura do Ponto de Orvalho</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempOrvalho/00_temporvalho_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura do Ponto de Orvalho Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempOrvalho/01_temporvalho_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura do Ponto de Orvalho Média Diária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempOrvalho/02_temporvalho_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura do Ponto de Orvalho Média Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempOrvalho/03_temporvalho_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura do Ponto de Orvalho Média Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/TempOrvalho/04_temporvalho_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Temperatura do Ponto de Orvalho</figcaption>
+</figure>
+</div>
+<section id="principais-achados-5" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-5">Principais Achados</h4>
+<p>A temperatura do ponto de orvalho acompanha a temperatura do ar, mantendo-se geralmente entre 15 °C e 25 °C ao longo do ano, com sazonalidade anual clara. Os valores mais baixos (abaixo de 10 °C) ocorrem raramente e concentram-se nos invernos mais secos.</p>
+<p>A distribuição é <strong>mais asimétrica e estreita</strong> do que a da temperatura do ar, refletindo a maior estabilidade da umidade absoluta em regiões litorâneas. A proximidade entre a temperatura do ar e a do ponto de orvalho na maior parte do tempo confirma a alta umidade relativa característica de Niterói.</p>
+</section>
+</section>
+<section id="radiação-solar-líquida" class="level3">
+<h3 class="anchored" data-anchor-id="radiação-solar-líquida">Radiação Solar Líquida</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoSolar/00_radiacaosolar_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação Solar Líquida Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoSolar/01_radiacaosolar_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação Solar Líquida Média Diária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoSolar/02_radiacaosolar_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação Solar Líquida Média Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoSolar/03_radiacaosolar_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação Solar Líquida Média Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoSolar/04_radiacaosolar_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Radiação Solar Líquida</figcaption>
+</figure>
+</div>
+<section id="principais-achados-6" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-6">Principais Achados</h4>
+<p>A radiação solar líquida exibe a <strong>mais marcante sazonalidade diária</strong> de todas as variáveis: os valores são positivos durante o dia e nulos (ou levemente negativos) à noite, gerando uma estrutura periódica de 24 horas extremamente regular. Na escala diária, os picos chegam a valores superiores a 200 W/m² no verão, enquanto o inverno apresenta médias diárias claramente menores.</p>
+<p>A distribuição é <strong>assimétrica à direita,</strong> com pico no zero.</p>
+</section>
+</section>
+<section id="radiação-térmica-líquida" class="level3">
+<h3 class="anchored" data-anchor-id="radiação-térmica-líquida">Radiação Térmica Líquida</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoTermica/00_radiacaotermica_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação Térmica Líquida Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoTermica/01_radiacaotermica_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação Térmica Líquida Média Diária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoTermica/02_radiacaotermica_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação Térmica Líquida Média Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoTermica/03_radiacaotermica_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação Térmica Líquida Média Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/RadiacaoTermica/04_radiacaotermica_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Radiação Térmica Líquida</figcaption>
+</figure>
+</div>
+<section id="principais-achados-7" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-7">Principais Achados</h4>
+<p>A radiação térmica líquida apresenta <strong>valores negativos</strong>, indicando perda contínua de energia pela superfície. A amplitude é menor do que a da radiação solar, com variações sazonais moderadas e picos negativos mais intensos no inverno (noites frias e céu limpo favorecem maior perda radiativa).</p>
+<p>A distribuição não tem caudas extremas pronunciadas como da radiação solar.</p>
+</section>
+</section>
+<section id="fluxo-de-calor-sensível" class="level3">
+<h3 class="anchored" data-anchor-id="fluxo-de-calor-sensível">Fluxo de Calor Sensível</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorSensivel/00_fluxocalorsensivel_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Fluxo de Calor Sensível Horário</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorSensivel/01_fluxocalorsensivel_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Fluxo de Calor Sensível Médio Diário</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorSensivel/02_fluxocalorsensivel_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Fluxo de Calor Sensível Médio Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorSensivel/03_fluxocalorsensivel_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Fluxo de Calor Sensível Médio Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorSensivel/04_fluxocalorsensivel_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição do Fluxo de Calor Sensível</figcaption>
+</figure>
+</div>
+<section id="principais-achados-8" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-8">Principais Achados</h4>
+<p>O histograma revela distribuição assimétrica à esquerda, com moda próxima a zero e cauda se estendendo até valores negativos elevados.</p>
+</section>
+</section>
+<section id="fluxo-de-calor-latente" class="level3">
+<h3 class="anchored" data-anchor-id="fluxo-de-calor-latente">Fluxo de Calor Latente</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorLatente/00_fluxocalorlatente_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Fluxo de Calor Latente Horário</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorLatente/01_fluxocalorlatente_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Fluxo de Calor Latente Médio Diário</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorLatente/02_fluxocalorlatente_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Fluxo de Calor Latente Médio Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorLatente/03_fluxocalorlatente_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Fluxo de Calor Latente Médio Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/FluxoCalorLatente/04_fluxocalorlatente_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição do Fluxo de Calor Latente</figcaption>
+</figure>
+</div>
+<section id="principais-achados-9" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-9">Principais Achados</h4>
+<p>O fluxo de calor latente (evapotranspiração) é consistentemente <strong>negativo</strong> e apresenta a maior amplitude entre os fluxos energéticos. Os picos são mais intensos no verão, quando a combinação de alta temperatura, umidade e radiação solar favorece a evaporação. A série mensal evidencia com clareza a sazonalidade, com mínimos no inverno seco.</p>
+<p>A distribuição é assimétrica à esquerda, com concentração de valores baixos e cauda longa. Há a presença de valores extremos positivos que são provaveis erros na base de dados.</p>
+<p>Em conjunto com o fluxo de calor sensível, essa variável compõe o balanço de energia da superfície e deve ser relevante como preditor da temperatura do ar.</p>
+</section>
+</section>
+<section id="vento-leste-oeste" class="level3">
+<h3 class="anchored" data-anchor-id="vento-leste-oeste">Vento Leste-Oeste</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoU/00_ventou_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Vento Leste-Oeste Horário</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoU/01_ventou_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Vento Leste-Oeste Médio Diário</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoU/02_ventou_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Vento Leste-Oeste Médio Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoU/03_ventou_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Vento Leste-Oeste Médio Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoU/04_ventou_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição do Vento Leste-Oeste</figcaption>
+</figure>
+</div>
+<section id="principais-achados-10" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-10">Principais Achados</h4>
+<p>A componente U do vento oscila em torno de zero, com <strong>leve predominância de valores negativos</strong> (vento de leste), consistente com a circulação dos alísios e a brisa marítima predominante em Niterói. A série não apresenta tendência temporal, mas há maior variabilidade nos meses de inverno e primavera.</p>
+<p>A distribuição é centrada levemente abaixo de zero, com caudas moderadas em ambas as direções. A ausência de valores extremos muito intensos distingue essa componente da velocidade escalar do vento.</p>
+</section>
+</section>
+<section id="vento-norte-sul" class="level3">
+<h3 class="anchored" data-anchor-id="vento-norte-sul">Vento Norte-Sul</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoV/00_ventov_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Vento Norte-Sul Horário</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoV/01_ventov_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Vento Norte-Sul Médio Diário</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoV/02_ventov_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Vento Norte-Sul Médio Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoV/03_ventov_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Vento Norte-Sul Médio Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/VentoV/04_ventov_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição do Vento Norte-Sul</figcaption>
+</figure>
+</div>
+<section id="principais-achados-11" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-11">Principais Achados</h4>
+<p>A componente V do vento também oscila em torno de zero, com comportamento mais <strong>irregular e ruidoso</strong> do que a componente U.</p>
+<p>A distribuição é aproximadamente simétrica, ligeiramente mais estreita do que a componente U. Os dois componentes juntos compõem o campo vetorial do vento, e sua inclusão no modelo permite capturar a direção além da intensidade.</p>
+</section>
+</section>
+<section id="pressão-superficial" class="level3">
+<h3 class="anchored" data-anchor-id="pressão-superficial">Pressão Superficial</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Pressao/00_pressao_horario.png" class="img-fluid figure-img"></p>
+<figcaption>Pressão Superficial Horária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Pressao/01_pressao_diario.png" class="img-fluid figure-img"></p>
+<figcaption>Pressão Superficial Média Diária</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Pressao/02_pressao_semanal.png" class="img-fluid figure-img"></p>
+<figcaption>Pressão Superficial Média Semanal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Pressao/03_pressao_mensal.png" class="img-fluid figure-img"></p>
+<figcaption>Pressão Superficial Média Mensal</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/Pressao/04_pressao_distribuicao.png" class="img-fluid figure-img"></p>
+<figcaption>Distribuição da Pressão Superficial</figcaption>
+</figure>
+</div>
+<section id="principais-achados-12" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-12">Principais Achados</h4>
+<p>A pressão superficial é a variável de <strong>menor variabilidade relativa</strong> de toda a base: os valores mensais oscilam em uma faixa estreita, de aproximadamente 10 Pa. As séries horárias revelam um ciclo de maré barométrica de ~12 horas (duas oscilações por dia), enquanto as variações de menor frequência refletem a passagem de sistemas sinóticos (frentes frias e anticiclones). Resalta-se uma translação da série em 10 Pa a partir do ano de 2016</p>
+<p>A distribuição é a mais simétrica e bimodal. A baixa amplitude e a previsibilidade do ciclo diário tornam essa variável potencialmente útil como âncora temporal para o modelo LSTM.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="análises-conjuntas" class="level1">
+<h1>Análises Conjuntas</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/30_series_sobrepostas_temperaturas.png" class="img-fluid figure-img"></p>
+<figcaption>Comparação Entre as Medidas de Temperatura</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> Este gráfico demonstra a altíssima sincronia entre as três medidas. A temperatura da superfície atinge os picos mais elevados durante o dia, enquanto a temperatura do ponto de orvalho permanece consistentemente como o limite inferior, nunca ultrapassando a temperatura do ar</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/31_series_sobrepostas_componentes_vento.png" class="img-fluid figure-img"></p>
+<figcaption>Componentes Médias do Vento</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> A sobreposição das componentes U (Leste-Oeste) e V (Norte-Sul) permite observar que a componente U apresenta maior variabilidade e picos mais intensos, indicando que os ventos que atingem Niterói possuem essa dominância na direção.</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/32_series_padronizadas_temperatura_umidade_vento.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatura, Umidade e Vento em Escala Comparável</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> Ao padronizar as variáveis, fica evidente o comportamento em “espelho” entre a umidade relativa e a Velocidade do Vento.</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/33_series_sobrepostas_radiacao_fluxos.png" class="img-fluid figure-img"></p>
+<figcaption>Radiação e Fluxos de Calor em Escala Diária</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> O gráfico ilustra o balanço energético da superfície. Enquanto a Radiação Solar Líquida é a principal fonte de energia (positiva), os fluxos de calor latente, sensível e a radiação térmica líquida atuam majoritariamente como perda de energia da superfície para a atmosfera (valores negativos)</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/22_dispersao_temperatura_superficie_radiacao.png" class="img-fluid figure-img"></p>
+<figcaption>Dispersão: Temperatura da Superfície e Radiação Solar</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> Confirmam uma forte relação linear positiva entre a incidência solar e o aquecimento da superfície.</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/23_dispersao_temperatura_orvalho_umidade.png" class="img-fluid figure-img"></p>
+<figcaption>Dispersão: Temperatura do Ar e Umidade Relativa</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> O gráfico de dispersão ratifica a correlação negativa (-0,67) entre essas variáveis. Nota-se que temperaturas elevadas (acima de 30°C) raramente ocorrem em condições de umidade muito alta, o que é típico de regimes de ar mais seco ou períodos de forte radiação solar</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/24_dispersao_radiacao_superficie_calor.png" class="img-fluid figure-img"></p>
+<figcaption>Dispersão: Radiação Solar e Temperatura da Superfície</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/25_dispersao_umidade_chuva_temperatura.png" class="img-fluid figure-img"></p>
+<figcaption>Dispersão: Precipitação Diária e Umidade Relativa</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> Este plot evidencia que eventos significativos de precipitação são fenômenos de “cauda”, ocorrendo quase exclusivamente quando a umidade relativa diária está acima de 80-90%</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/26_dispersao_vento_temperatura.png" class="img-fluid figure-img"></p>
+<figcaption>Dispersão: Componentes do Vento e Temperatura</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> A dispersão sugere que não há uma relação linear simples entre a direção do vento e a temperatura, mas permite identificar agrupamentos que podem estar associados a brisas marítimas ou frentes frias</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/27_matriz_correlacao.png" class="img-fluid figure-img"></p>
+<figcaption>Matriz de Correlação Entre as Variáveis Meteorológicas</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>Comentário:</strong> É o resumo estatístico da seção. Destaca-se a correlação quase perfeita (0,96) entre a temperatura do ar e a da superfície, validando esta última como o preditor mais robusto para o modelo LSTM . Além disso, a forte correlação entre os fluxos de calor latente e sensível (0,80) reforça a consistência física dos dados de reanálise</p>
+</blockquote>
+<section id="principais-achados-13" class="level4">
+<h4 class="anchored" data-anchor-id="principais-achados-13">Principais Achados</h4>
+<p>As três séries de temperatura (ar, superfície e orvalho) evoluem de forma <strong>altamente sincronizada</strong>, com a temperatura da superfície apresentando maior amplitude e os valores de orvalho funcionando como piso térmico. A diferença entre a temperatura do ar e a do orvalho é um indicador direto do déficit de pressão de vapor, variando de quase zero nos dias úmidos a mais de 10 °C nos dias secos de inverno.</p>
+<p>As componentes U e V do vento mostram comportamentos <strong>descorrelacionados entre si</strong>, com U mais estável e V mais volátil. A série padronizada de temperatura, umidade e vento confirma a anticorrelação entre temperatura e umidade: quando a temperatura sobe (verão), a umidade relativa cai ligeiramente, e vice-versa no inverno.</p>
+<p>Radiação solar, fluxo de calor latente e fluxo sensível evoluem em <strong>fase</strong>, com os maiores valores no verão. A radiação térmica líquida apresenta comportamento oposto (mais negativa no inverno), completando o balanço energético da superfície.</p>
+<p>Os gráficos de dispersão confirmam relações físicas esperadas: forte correlação positiva entre temperatura do ar e da superfície (mediada pela radiação solar), correlação positiva entre temperatura do orvalho e umidade relativa, e dispersão crescente entre precipitação e umidade (eventos extremos de chuva ocorrem em ampla faixa de umidade).</p>
+<p>A <strong>matriz de correlação</strong> destaca as correlações mais relevantes para a modelagem: temperatura do ar correlaciona-se com temperatura da superfície (0,95), umidade relativa(-0,67), Radiação Solar Líquida(0,66), e outras. Com metor correlação com a Precipitação e o Vento Leste-Oeste.</p>
+</section>
+</section>
+<section id="definição-da-base-de-treino-e-teste" class="level1">
+<h1>Definição da Base de Treino e Teste</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/29_treino_teste_temperatura.png" class="img-fluid figure-img"></p>
+<figcaption>Divisão Cronológica da Base de Modelagem</figcaption>
+</figure>
+</div>
+<p>A base foi dividida cronologicamente em três conjuntos:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Conjunto</th>
+<th style="text-align: center;">Proporção</th>
+<th style="text-align: left;">Início</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Treino</td>
+<td style="text-align: center;">70%</td>
+<td style="text-align: left;">31/12/2009</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Validação</td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: left;">29/06/2021</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Teste</td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: left;">16/12/2023</td>
+</tr>
+</tbody>
+</table>
+<p>A divisão cronológica 70/15/15 preserva a ordem temporal e garante que o modelo seja avaliado em um período não visto durante o treinamento. O conjunto de teste (a partir de dezembro de 2023) cobre aproximadamente dois anos e inclui ao menos um ciclo sazonal completo, o que é suficiente para avaliar a capacidade de generalização do LSTM.</p>
+</section>
+<section id="escolha-dos-hiperparâmetros" class="level1">
+<h1>Escolha dos Hiperparâmetros</h1>
+<section id="janela" class="level2">
+<h2 class="anchored" data-anchor-id="janela">Janela</h2>
+<p>O hiperparâmetro <strong>janela</strong> define quantos passos de tempo anteriores serão usados como entrada do modelo para prever o próximo valor (ou os próximos <em>k</em> valores).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="resultados/28_autocorrelacao_temperatura (muito importante).png" class="img-fluid figure-img"></p>
+<figcaption>Autocorrelação da Temperatura Horária</figcaption>
+</figure>
+</div>
+<p>O gráfico de autocorrelação evidencia uma forte estrutura de dependência temporal na série de temperatura horária, com correlações significativas se estendendo por vários dias e picos pronunciados a cada 24 horas, confirmando a sazonalidade diária. Com base nesses padrões, foram escolhidas as seguintes janelas para comparação:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Janela (h)</th>
+<th style="text-align: left;">Justificativa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">24</td>
+<td style="text-align: left;">Captura um ciclo diário completo</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">48</td>
+<td style="text-align: left;">Captura o efeito de dois dias anteriores</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">72</td>
+<td style="text-align: left;">Captura o efeito de três dias anteriores</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">96</td>
+<td style="text-align: left;">Captura o efeito de quatro dias anteriores</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="horizonte-de-previsão-k" class="level2">
+<h2 class="anchored" data-anchor-id="horizonte-de-previsão-k">Horizonte de Previsão (<em>k</em>)</h2>
+<p>O hiperparâmetro <strong>k</strong> define quantos passos à frente o modelo irá prever simultaneamente. Foram considerados horizontes de até 24 horas, cobrindo desde previsões de curto prazo até um ciclo diário completo:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">k (h)</th>
+<th style="text-align: left;">Justificativa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">Previsão de 6 horas à frente</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">12</td>
+<td style="text-align: left;">Previsão de 12 horas à frente</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">18</td>
+<td style="text-align: left;">Previsão de 18 horas à frente</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">24</td>
+<td style="text-align: left;">Previsão de 24 horas à frente</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="conclusão" class="level1">
+<h1>Conclusão</h1>
+<p>Esta análise descritiva dos dados ERA5-Land e Meteostat para Niterói, RJ, cobriu as seguintes etapas:</p>
+<ol type="1">
+<li><p><strong>Dados faltantes</strong>: a base não apresentou nenhum dado faltante, resultado esperado dado o rigor do ERA5-Land como fonte de reanálise climática global.</p></li>
+<li><p><strong>Análise univariada</strong>: para cada uma das 13 variáveis meteorológicas foram geradas séries temporais nas escalas horária, diária, semanal e mensal, além de histograma e boxplot para caracterização distribucional.</p></li>
+<li><p><strong>Análise multivariada</strong>: séries sobrepostas por grupo temático (temperaturas, radiação, vento e pressão), matriz de correlação e gráficos de dispersão para identificar estruturas de co-variação entre as variáveis.</p></li>
+<li><p><strong>Divisão cronológica</strong>: a base foi particionada em treino, validação e teste, preservando a ordem temporal da série.</p></li>
+<li><p><strong>Hiperparâmetros selecionados</strong>:</p>
+<ul>
+<li><strong>Janelas candidatas</strong>: 24 h, 48 h, 72 h e 96 h — escolhidas com base na autocorrelação horária da temperatura, que evidencia ciclos diários pronunciados e dependência de múltiplos dias.</li>
+<li><strong>Horizontes de previsão (k)</strong>: 6 h, 12 h, 18 h e 24 h — cobrindo desde previsões de curtíssimo prazo até um ciclo diário completo.</li>
+</ul></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiada");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiada");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

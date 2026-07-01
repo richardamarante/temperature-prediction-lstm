@@ -137,7 +137,7 @@ format:
 
 - **Local:** Niterói, RJ
 
-- **Período:** 0h 31/12/2009 → 23h 30/06/2026
+- **Período:** 0h 01/01/2010 → 0h 01/07/2026
 
 :::
 
@@ -247,7 +247,6 @@ Análises e Comparações
 | **48h** | 2 dias |
 | **72h** | 3 dias |
 | **96h** | 4 dias |
-| **168h** | 7 dias |
 : {.tabela-tema}
 
 :::
@@ -298,7 +297,7 @@ Análises e Comparações
 - Otimizador **Adam**
 - Taxa de aprendizado **0,001**
 - *Early stopping* na validação
-- 3–5 épocas por modelo
+- 10 épocas por modelo
 
 <br>
 
@@ -332,72 +331,81 @@ Análises e Comparações
 
 ## Todos os Modelos
 
-::: {.box-copper style="font-size: 0.62em;"}
+::: {.box-copper .box-tabela-scroll}
 
-| Alvo | Janela (h) | Horizonte | RMSE (°C) | MAE (°C) | R² |
-|------|:----------:|:---------:|:---------:|:--------:|:--:|
-| **TempHoraria** | **72** | **1h** | **0,811** | **0,613** | **0,962** |
-| TempHoraria | 72 | 6h | 1,081 | 0,777 | 0,932 |
-| TempHoraria | 96 | 12h | 1,341 | 0,969 | 0,895 |
-| TempHoraria | 96 | 18h | 1,514 | 1,093 | 0,866 |
-| TempHoraria | 24 | 24h | 1,716 | 1,240 | 0,828 |
-: {.tabela-tema}
+{{< include includes/todos_modelos.html >}}
 
 :::
+
+## RMSE por Horizonte e Janela
+
+![](media/lstm_rmse_por_k_e_janela.png){fig-align="center" width="88%"}
+
+## R² por Horizonte e Janela
+
+![](media/lstm_r2_por_k_e_janela.png){fig-align="center" width="88%"}
 
 ## Melhores Modelos
 
-:::: {.columns}
+::: {.box-copper .box-tabela-scroll}
 
-::: {.column width="48%"}
-
-::: {.box-teal style="font-size: 0.82em;"}
-
-<div style="text-align: center; font-size: 1.2em;">
-  <span class="highlight-teal">Melhor Modelo — Temperatura Horária</span>
-</div>
-
-| Alvo | Janela | Horizonte | RMSE | R² |
-|------|:------:|:---------:|:----:|:--:|
-| Horária | 72h | 1h | **0,811** | **0,962** |
-: {.tabela-tema}
+{{< include includes/melhores_modelos.html >}}
 
 :::
 
-:::
 
-::: {.column width="4%"}
-:::
+# Ajuste por Horizonte {.transition-slide}
 
-::: {.column width="48%"}
+## Real × Previsto — k = 1 hora
 
-::: {.box-copper style="font-size: 0.82em;"}
+![](media/real_vs_previsto/individuais/real_vs_previsto_k01.png){fig-align="center" width="88%"}
 
-<div style="text-align: center; font-size: 1.2em;">
-  <span class="highlight-copper">O que os resultados mostram</span>
-</div>
+## Real × Previsto — k = 6 horas
 
-- O melhor modelo é sempre o de **menor horizonte** (1h)
-- Desempenho se deteriora progressivamente com o aumento de *k*
-- **Temp. horária (1h)** é o grande destaque: RMSE de apenas **0,81 °C**
+![](media/real_vs_previsto/individuais/real_vs_previsto_k06.png){fig-align="center" width="88%"}
 
-:::
+## Real × Previsto — k = 12 horas
 
-:::
+![](media/real_vs_previsto/individuais/real_vs_previsto_k12.png){fig-align="center" width="88%"}
 
-::::
+## Real × Previsto — k = 18 horas
 
-## Previsão vs. Real — Temperatura Horária
+![](media/real_vs_previsto/individuais/real_vs_previsto_k18.png){fig-align="center" width="88%"}
 
-![](media/real_vs_previsto_teste/lstm_horaria_j072_todos_k_real_vs_previsto_fim_teste.png){fig-align="center" width="80%"}
+## Real × Previsto — k = 24 horas
 
-## Modelos Definitivos — Horária
+![](media/real_vs_previsto/individuais/real_vs_previsto_k24.png){fig-align="center" width="88%"}
 
-![](media/modelos_definitivos/lstm_previsoes_futuras_melhores_modelos_horaria.png){fig-align="center" width="80%"}
+## Evolução do Ajuste
 
-## Previsões Futuras
+![](media/real_vs_previsto/real_vs_previsto_k01_k24.gif){fig-align="center" width="88%"}
 
-![](media/previsoes_futuras/lstm_previsoes_futuras_resumo.png){fig-align="center" width="80%"}
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const reiniciarGifs = (slide) => {
+    if (!slide) return;
+    slide.querySelectorAll('img[src^="data:image/gif"], img[src$=".gif"]').forEach((gif) => {
+      const novoGif = gif.cloneNode(true);
+      gif.replaceWith(novoGif);
+    });
+  };
+
+  Reveal.on("ready", (evento) => reiniciarGifs(evento.currentSlide));
+  Reveal.on("slidechanged", (evento) => reiniciarGifs(evento.currentSlide));
+});
+</script>
+```
+
+# Previsões {.transition-slide}
+
+## Previsões de Temperatura Horária por Janela
+
+![](media/lstm_previsoes_por_janela.png){fig-align="center" width="88%"}
+
+## Previsão Final de Temperatura Horária
+
+![](media/lstm_previsao_modelos_vencedores.png){fig-align="center" width="88%"}
 
 # Conclusão {.transition-slide}
 
@@ -415,7 +423,7 @@ Análises e Comparações
 
 - **96 modelos LSTM** treinados e comparados
 - Variável-alvo: temperatura horária
-- Janelas de **24h a 168h**, horizontes de **1h a 24h**
+- Janelas de **24h a 96h**, horizontes de **1h a 24h**
 - Mesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros
 - Previsões geradas para **datas futuras**
 
@@ -434,7 +442,7 @@ Análises e Comparações
   <span class="highlight-copper">Principais Resultados</span>
 </div>
 
-- LSTM demonstrou **excelente desempenho** na previsão horária de curto prazo — R² = **0,96**, RMSE = **0,81 °C**
+- LSTM demonstrou **excelente desempenho** na previsão horária de curto prazo. Até as primeiras 10h de previsão o RMSE se mantém abaixo de 1,3°C e R² acima de 0,90.
 - Desempenho cai com o aumento do horizonte
 - A arquitetura conseguiu capturar **padrões sazonais** e extrapolá-los para horários futuros
 
@@ -444,4 +452,4 @@ Análises e Comparações
 
 ::::
 
-# Fim. {.unnumbered .final-slide}
+# Obrigado! {.unnumbered .final-slide}

@@ -28,6 +28,20 @@
     "text": "4.1 Análise Descritiva"
   },
   {
+    "objectID": "Apresentação/index.html#análise-descritiva-1",
+    "href": "Apresentação/index.html#análise-descritiva-1",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.2 Análise Descritiva",
+    "text": "4.2 Análise Descritiva"
+  },
+  {
+    "objectID": "Apresentação/index.html#análise-descritiva-2",
+    "href": "Apresentação/index.html#análise-descritiva-2",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.3 Análise Descritiva",
+    "text": "4.3 Análise Descritiva"
+  },
+  {
     "objectID": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
     "href": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
     "title": "Previsão de Temperatura Horária em Niterói",
@@ -39,40 +53,90 @@
     "href": "Apresentação/index.html#todos-os-modelos",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "5.1 Todos os Modelos",
-    "text": "5.1 Todos os Modelos\n\n\n\n\n\n\n\n\n\n\n\n\nAlvo\nJanela (h)\nHorizonte\nRMSE (°C)\nMAE (°C)\nR²\n\n\n\n\nTempHoraria\n72\n1h\n0,811\n0,613\n0,962\n\n\nTempHoraria\n72\n6h\n1,081\n0,777\n0,932\n\n\nTempHoraria\n96\n12h\n1,341\n0,969\n0,895\n\n\nTempHoraria\n96\n18h\n1,514\n1,093\n0,866\n\n\nTempHoraria\n24\n24h\n1,716\n1,240\n0,828"
+    "text": "5.1 Todos os Modelos\n\n\n\n\n\nHorizonte (k)\n\n\nJanela (h)\n\n\nRMSE (°C)\n\n\nMAE (°C)\n\n\nR²\n\n\n\n\n\n\n1h\n\n\n24\n\n\n0,826\n\n\n0,617\n\n\n0,960\n\n\n\n\n1h\n\n\n48\n\n\n0,754\n\n\n0,562\n\n\n0,967\n\n\n\n\n1h\n\n\n72\n\n\n0,776\n\n\n0,588\n\n\n0,965\n\n\n\n\n1h\n\n\n96\n\n\n0,754\n\n\n0,570\n\n\n0,967\n\n\n\n\n2h\n\n\n24\n\n\n0,810\n\n\n0,605\n\n\n0,962\n\n\n\n\n2h\n\n\n48\n\n\n0,803\n\n\n0,596\n\n\n0,962\n\n\n\n\n2h\n\n\n72\n\n\n0,872\n\n\n0,653\n\n\n0,956\n\n\n\n\n2h\n\n\n96\n\n\n0,912\n\n\n0,686\n\n\n0,951\n\n\n\n\n3h\n\n\n24\n\n\n0,932\n\n\n0,689\n\n\n0,949\n\n\n\n\n3h\n\n\n48\n\n\n0,899\n\n\n0,673\n\n\n0,953\n\n\n\n\n3h\n\n\n72\n\n\n0,933\n\n\n0,691\n\n\n0,949\n\n\n\n\n3h\n\n\n96\n\n\n0,933\n\n\n0,695\n\n\n0,949\n\n\n\n\n4h\n\n\n24\n\n\n1,000\n\n\n0,735\n\n\n0,942\n\n\n\n\n4h\n\n\n48\n\n\n0,984\n\n\n0,721\n\n\n0,943\n\n\n\n\n4h\n\n\n72\n\n\n0,975\n\n\n0,713\n\n\n0,944\n\n\n\n\n4h\n\n\n96\n\n\n1,018\n\n\n0,760\n\n\n0,939\n\n\n\n\n5h\n\n\n24\n\n\n1,082\n\n\n0,794\n\n\n0,932\n\n\n\n\n5h\n\n\n48\n\n\n1,060\n\n\n0,785\n\n\n0,934\n\n\n\n\n5h\n\n\n72\n\n\n1,013\n\n\n0,734\n\n\n0,940\n\n\n\n\n5h\n\n\n96\n\n\n1,072\n\n\n0,790\n\n\n0,933\n\n\n\n\n6h\n\n\n24\n\n\n1,132\n\n\n0,828\n\n\n0,925\n\n\n\n\n6h\n\n\n48\n\n\n1,122\n\n\n0,810\n\n\n0,926\n\n\n\n\n6h\n\n\n72\n\n\n1,099\n\n\n0,808\n\n\n0,929\n\n\n\n\n6h\n\n\n96\n\n\n1,100\n\n\n0,805\n\n\n0,929\n\n\n\n\n7h\n\n\n24\n\n\n1,172\n\n\n0,854\n\n\n0,920\n\n\n\n\n7h\n\n\n48\n\n\n1,157\n\n\n0,836\n\n\n0,922\n\n\n\n\n7h\n\n\n72\n\n\n1,156\n\n\n0,837\n\n\n0,922\n\n\n\n\n7h\n\n\n96\n\n\n1,129\n\n\n0,810\n\n\n0,925\n\n\n\n\n8h\n\n\n24\n\n\n1,214\n\n\n0,882\n\n\n0,914\n\n\n\n\n8h\n\n\n48\n\n\n1,249\n\n\n0,900\n\n\n0,909\n\n\n\n\n8h\n\n\n72\n\n\n1,202\n\n\n0,884\n\n\n0,916\n\n\n\n\n8h\n\n\n96\n\n\n1,226\n\n\n0,880\n\n\n0,912\n\n\n\n\n9h\n\n\n24\n\n\n1,261\n\n\n0,911\n\n\n0,907\n\n\n\n\n9h\n\n\n48\n\n\n1,268\n\n\n0,930\n\n\n0,906\n\n\n\n\n9h\n\n\n72\n\n\n1,259\n\n\n0,912\n\n\n0,907\n\n\n\n\n9h\n\n\n96\n\n\n1,215\n\n\n0,870\n\n\n0,914\n\n\n\n\n10h\n\n\n24\n\n\n1,283\n\n\n0,928\n\n\n0,904\n\n\n\n\n10h\n\n\n48\n\n\n1,290\n\n\n0,934\n\n\n0,903\n\n\n\n\n10h\n\n\n72\n\n\n1,313\n\n\n0,954\n\n\n0,899\n\n\n\n\n10h\n\n\n96\n\n\n1,286\n\n\n0,940\n\n\n0,903\n\n\n\n\n11h\n\n\n24\n\n\n1,355\n\n\n0,987\n\n\n0,893\n\n\n\n\n11h\n\n\n48\n\n\n1,314\n\n\n0,948\n\n\n0,899\n\n\n\n\n11h\n\n\n72\n\n\n1,378\n\n\n1,014\n\n\n0,889\n\n\n\n\n11h\n\n\n96\n\n\n1,310\n\n\n0,948\n\n\n0,900\n\n\n\n\n12h\n\n\n24\n\n\n1,363\n\n\n0,981\n\n\n0,891\n\n\n\n\n12h\n\n\n48\n\n\n1,339\n\n\n0,959\n\n\n0,895\n\n\n\n\n12h\n\n\n72\n\n\n1,333\n\n\n0,965\n\n\n0,896\n\n\n\n\n12h\n\n\n96\n\n\n1,377\n\n\n1,005\n\n\n0,889\n\n\n\n\n13h\n\n\n24\n\n\n1,438\n\n\n1,057\n\n\n0,879\n\n\n\n\n13h\n\n\n48\n\n\n1,379\n\n\n1,005\n\n\n0,889\n\n\n\n\n13h\n\n\n72\n\n\n1,372\n\n\n1,001\n\n\n0,890\n\n\n\n\n13h\n\n\n96\n\n\n1,398\n\n\n1,026\n\n\n0,886\n\n\n\n\n14h\n\n\n24\n\n\n1,412\n\n\n1,027\n\n\n0,883\n\n\n\n\n14h\n\n\n48\n\n\n1,401\n\n\n1,008\n\n\n0,885\n\n\n\n\n14h\n\n\n72\n\n\n1,391\n\n\n1,009\n\n\n0,887\n\n\n\n\n14h\n\n\n96\n\n\n1,405\n\n\n1,019\n\n\n0,885\n\n\n\n\n15h\n\n\n24\n\n\n1,412\n\n\n1,029\n\n\n0,883\n\n\n\n\n15h\n\n\n48\n\n\n1,438\n\n\n1,050\n\n\n0,879\n\n\n\n\n15h\n\n\n72\n\n\n1,408\n\n\n1,020\n\n\n0,884\n\n\n\n\n15h\n\n\n96\n\n\n1,422\n\n\n1,036\n\n\n0,882\n\n\n\n\n16h\n\n\n24\n\n\n1,439\n\n\n1,045\n\n\n0,879\n\n\n\n\n16h\n\n\n48\n\n\n1,434\n\n\n1,033\n\n\n0,880\n\n\n\n\n16h\n\n\n72\n\n\n1,460\n\n\n1,075\n\n\n0,875\n\n\n\n\n16h\n\n\n96\n\n\n1,463\n\n\n1,069\n\n\n0,875\n\n\n\n\n17h\n\n\n24\n\n\n1,550\n\n\n1,138\n\n\n0,859\n\n\n\n\n17h\n\n\n48\n\n\n1,483\n\n\n1,077\n\n\n0,871\n\n\n\n\n17h\n\n\n72\n\n\n1,478\n\n\n1,067\n\n\n0,872\n\n\n\n\n17h\n\n\n96\n\n\n1,530\n\n\n1,116\n\n\n0,863\n\n\n\n\n18h\n\n\n24\n\n\n1,516\n\n\n1,104\n\n\n0,866\n\n\n\n\n18h\n\n\n48\n\n\n1,498\n\n\n1,084\n\n\n0,869\n\n\n\n\n18h\n\n\n72\n\n\n1,519\n\n\n1,103\n\n\n0,865\n\n\n\n\n18h\n\n\n96\n\n\n1,485\n\n\n1,071\n\n\n0,871\n\n\n\n\n19h\n\n\n24\n\n\n1,541\n\n\n1,116\n\n\n0,861\n\n\n\n\n19h\n\n\n48\n\n\n1,572\n\n\n1,135\n\n\n0,855\n\n\n\n\n19h\n\n\n72\n\n\n1,568\n\n\n1,140\n\n\n0,856\n\n\n\n\n19h\n\n\n96\n\n\n1,544\n\n\n1,106\n\n\n0,861\n\n\n\n\n20h\n\n\n24\n\n\n1,574\n\n\n1,134\n\n\n0,855\n\n\n\n\n20h\n\n\n48\n\n\n1,602\n\n\n1,163\n\n\n0,850\n\n\n\n\n20h\n\n\n72\n\n\n1,602\n\n\n1,167\n\n\n0,850\n\n\n\n\n20h\n\n\n96\n\n\n1,586\n\n\n1,144\n\n\n0,853\n\n\n\n\n21h\n\n\n24\n\n\n1,598\n\n\n1,148\n\n\n0,851\n\n\n\n\n21h\n\n\n48\n\n\n1,641\n\n\n1,188\n\n\n0,842\n\n\n\n\n21h\n\n\n72\n\n\n1,601\n\n\n1,149\n\n\n0,850\n\n\n\n\n21h\n\n\n96\n\n\n1,617\n\n\n1,168\n\n\n0,847\n\n\n\n\n22h\n\n\n24\n\n\n1,663\n\n\n1,204\n\n\n0,838\n\n\n\n\n22h\n\n\n48\n\n\n1,644\n\n\n1,186\n\n\n0,842\n\n\n\n\n22h\n\n\n72\n\n\n1,664\n\n\n1,202\n\n\n0,838\n\n\n\n\n22h\n\n\n96\n\n\n1,671\n\n\n1,210\n\n\n0,837\n\n\n\n\n23h\n\n\n24\n\n\n1,707\n\n\n1,242\n\n\n0,829\n\n\n\n\n23h\n\n\n48\n\n\n1,669\n\n\n1,203\n\n\n0,837\n\n\n\n\n23h\n\n\n72\n\n\n1,685\n\n\n1,224\n\n\n0,834\n\n\n\n\n23h\n\n\n96\n\n\n1,702\n\n\n1,230\n\n\n0,831\n\n\n\n\n24h\n\n\n24\n\n\n1,696\n\n\n1,229\n\n\n0,832\n\n\n\n\n24h\n\n\n48\n\n\n1,716\n\n\n1,239\n\n\n0,828\n\n\n\n\n24h\n\n\n72\n\n\n1,719\n\n\n1,249\n\n\n0,827\n\n\n\n\n24h\n\n\n96\n\n\n1,716\n\n\n1,238\n\n\n0,828"
+  },
+  {
+    "objectID": "Apresentação/index.html#rmse-por-horizonte-e-janela",
+    "href": "Apresentação/index.html#rmse-por-horizonte-e-janela",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "5.2 RMSE por Horizonte e Janela",
+    "text": "5.2 RMSE por Horizonte e Janela"
+  },
+  {
+    "objectID": "Apresentação/index.html#r²-por-horizonte-e-janela",
+    "href": "Apresentação/index.html#r²-por-horizonte-e-janela",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "5.3 R² por Horizonte e Janela",
+    "text": "5.3 R² por Horizonte e Janela"
   },
   {
     "objectID": "Apresentação/index.html#melhores-modelos",
     "href": "Apresentação/index.html#melhores-modelos",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.2 Melhores Modelos",
-    "text": "5.2 Melhores Modelos\n\n\n\n\nMelhor Modelo — Temperatura Horária\n\n\n\n\nAlvo\nJanela\nHorizonte\nRMSE\nR²\n\n\n\n\nHorária\n72h\n1h\n0,811\n0,962\n\n\n\n\n\n\n\n\n\nO que os resultados mostram\n\n\nO melhor modelo é sempre o de menor horizonte (1h)\nDesempenho se deteriora progressivamente com o aumento de k\nTemp. horária (1h) é o grande destaque: RMSE de apenas 0,81 °C"
+    "section": "5.4 Melhores Modelos",
+    "text": "5.4 Melhores Modelos\n\n\n\n\n\nHorizonte (k)\n\n\nJanela (h)\n\n\nRMSE (°C)\n\n\nMAE (°C)\n\n\nR²\n\n\n\n\n\n\n1h\n\n\n96\n\n\n0,754\n\n\n0,570\n\n\n0,967\n\n\n\n\n2h\n\n\n48\n\n\n0,803\n\n\n0,596\n\n\n0,962\n\n\n\n\n3h\n\n\n48\n\n\n0,899\n\n\n0,673\n\n\n0,953\n\n\n\n\n4h\n\n\n72\n\n\n0,975\n\n\n0,713\n\n\n0,944\n\n\n\n\n5h\n\n\n72\n\n\n1,013\n\n\n0,734\n\n\n0,940\n\n\n\n\n6h\n\n\n72\n\n\n1,099\n\n\n0,808\n\n\n0,929\n\n\n\n\n7h\n\n\n96\n\n\n1,129\n\n\n0,810\n\n\n0,925\n\n\n\n\n8h\n\n\n72\n\n\n1,202\n\n\n0,884\n\n\n0,916\n\n\n\n\n9h\n\n\n96\n\n\n1,215\n\n\n0,870\n\n\n0,914\n\n\n\n\n10h\n\n\n24\n\n\n1,283\n\n\n0,928\n\n\n0,904\n\n\n\n\n11h\n\n\n96\n\n\n1,310\n\n\n0,948\n\n\n0,900\n\n\n\n\n12h\n\n\n72\n\n\n1,333\n\n\n0,965\n\n\n0,896\n\n\n\n\n13h\n\n\n72\n\n\n1,372\n\n\n1,001\n\n\n0,890\n\n\n\n\n14h\n\n\n72\n\n\n1,391\n\n\n1,009\n\n\n0,887\n\n\n\n\n15h\n\n\n72\n\n\n1,408\n\n\n1,020\n\n\n0,884\n\n\n\n\n16h\n\n\n48\n\n\n1,434\n\n\n1,033\n\n\n0,880\n\n\n\n\n17h\n\n\n72\n\n\n1,478\n\n\n1,067\n\n\n0,872\n\n\n\n\n18h\n\n\n96\n\n\n1,485\n\n\n1,071\n\n\n0,871\n\n\n\n\n19h\n\n\n24\n\n\n1,541\n\n\n1,116\n\n\n0,861\n\n\n\n\n20h\n\n\n24\n\n\n1,574\n\n\n1,134\n\n\n0,855\n\n\n\n\n21h\n\n\n24\n\n\n1,598\n\n\n1,148\n\n\n0,851\n\n\n\n\n22h\n\n\n48\n\n\n1,644\n\n\n1,186\n\n\n0,842\n\n\n\n\n23h\n\n\n48\n\n\n1,669\n\n\n1,203\n\n\n0,837\n\n\n\n\n24h\n\n\n24\n\n\n1,696\n\n\n1,229\n\n\n0,832"
   },
   {
-    "objectID": "Apresentação/index.html#previsão-vs.-real-temperatura-horária",
-    "href": "Apresentação/index.html#previsão-vs.-real-temperatura-horária",
+    "objectID": "Apresentação/index.html#real-previsto-k-1-hora",
+    "href": "Apresentação/index.html#real-previsto-k-1-hora",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.3 Previsão vs. Real — Temperatura Horária",
-    "text": "5.3 Previsão vs. Real — Temperatura Horária"
+    "section": "6.1 Real × Previsto — k = 1 hora",
+    "text": "6.1 Real × Previsto — k = 1 hora"
   },
   {
-    "objectID": "Apresentação/index.html#modelos-definitivos-horária",
-    "href": "Apresentação/index.html#modelos-definitivos-horária",
+    "objectID": "Apresentação/index.html#real-previsto-k-6-horas",
+    "href": "Apresentação/index.html#real-previsto-k-6-horas",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.4 Modelos Definitivos — Horária",
-    "text": "5.4 Modelos Definitivos — Horária"
+    "section": "6.2 Real × Previsto — k = 6 horas",
+    "text": "6.2 Real × Previsto — k = 6 horas"
   },
   {
-    "objectID": "Apresentação/index.html#previsões-futuras",
-    "href": "Apresentação/index.html#previsões-futuras",
+    "objectID": "Apresentação/index.html#real-previsto-k-12-horas",
+    "href": "Apresentação/index.html#real-previsto-k-12-horas",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "5.5 Previsões Futuras",
-    "text": "5.5 Previsões Futuras"
+    "section": "6.3 Real × Previsto — k = 12 horas",
+    "text": "6.3 Real × Previsto — k = 12 horas"
+  },
+  {
+    "objectID": "Apresentação/index.html#real-previsto-k-18-horas",
+    "href": "Apresentação/index.html#real-previsto-k-18-horas",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "6.4 Real × Previsto — k = 18 horas",
+    "text": "6.4 Real × Previsto — k = 18 horas"
+  },
+  {
+    "objectID": "Apresentação/index.html#real-previsto-k-24-horas",
+    "href": "Apresentação/index.html#real-previsto-k-24-horas",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "6.5 Real × Previsto — k = 24 horas",
+    "text": "6.5 Real × Previsto — k = 24 horas"
+  },
+  {
+    "objectID": "Apresentação/index.html#evolução-do-ajuste",
+    "href": "Apresentação/index.html#evolução-do-ajuste",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "6.6 Evolução do Ajuste",
+    "text": "6.6 Evolução do Ajuste"
+  },
+  {
+    "objectID": "Apresentação/index.html#previsões-de-temperatura-horária-por-janela",
+    "href": "Apresentação/index.html#previsões-de-temperatura-horária-por-janela",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "7.1 Previsões de Temperatura Horária por Janela",
+    "text": "7.1 Previsões de Temperatura Horária por Janela"
+  },
+  {
+    "objectID": "Apresentação/index.html#previsão-final-de-temperatura-horária",
+    "href": "Apresentação/index.html#previsão-final-de-temperatura-horária",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "7.2 Previsão Final de Temperatura Horária",
+    "text": "7.2 Previsão Final de Temperatura Horária"
   },
   {
     "objectID": "Apresentação/index.html#conclusão-1",
     "href": "Apresentação/index.html#conclusão-1",
     "title": "Previsão de Temperatura Horária em Niterói",
+<<<<<<< HEAD
     "section": "6.1 Conclusão",
     "text": "6.1 Conclusão\n\n\n\n\nO que foi feito\n\n\n96 modelos LSTM treinados e comparados\nVariável-alvo: temperatura horária\nJanelas de 24h a 168h, horizontes de 1h a 24h\nMesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros\nPrevisões geradas para datas futuras\n\n\n\n\n\n\n\nPrincipais Resultados\n\n\nLSTM demonstrou excelente desempenho na previsão horária de curto prazo — R² = 0,96, RMSE = 0,81 °C\nDesempenho cai com o aumento do horizonte\nA arquitetura conseguiu capturar padrões sazonais e extrapolá-los para horários futuros"
   },
@@ -110,5 +174,9 @@
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "4.3 Análise Descritiva",
     "text": "4.3 Análise Descritiva"
+=======
+    "section": "8.1 Conclusão",
+    "text": "8.1 Conclusão\n\n\n\n\nO que foi feito\n\n\n96 modelos LSTM treinados e comparados\nVariável-alvo: temperatura horária\nJanelas de 24h a 168h, horizontes de 1h a 24h\nMesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros\nPrevisões geradas para datas futuras\n\n\n\n\n\n\n\nPrincipais Resultados\n\n\nLSTM demonstrou excelente desempenho na previsão horária de curto prazo — R² = 0,96, RMSE = 0,81 °C\nDesempenho cai com o aumento do horizonte\nA arquitetura conseguiu capturar padrões sazonais e extrapolá-los para horários futuros"
+>>>>>>> 962fb716dd4f6fd165fb6bc9f8f8a09e005905de
   }
 ]

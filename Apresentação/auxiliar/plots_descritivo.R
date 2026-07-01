@@ -28,8 +28,13 @@ cinza <- "#AEB7BF"
 
 temperatura <- dados %>%
   filter(
+<<<<<<< HEAD
     Data >= ymd_hms("2026-06-01 00:00:00"),
     Data <= ymd_hms("2026-07-01 00:00:00")
+=======
+    Data >= ymd_hms("2021-06-01 00:00:00"),
+    Data <= ymd_hms("2021-06-28 23:00:00")
+>>>>>>> 962fb716dd4f6fd165fb6bc9f8f8a09e005905de
   ) %>%
   select(Data, Temperatura)
 
@@ -41,8 +46,13 @@ grafico_variavel <- function(var,
 
   base <- dados %>%
     filter(
+<<<<<<< HEAD
       Data >= ymd_hms("2026-06-01 00:00:00"),
       Data <= ymd_hms("2026-07-01 00:00:00")
+=======
+      Data >= ymd_hms("2021-06-01 00:00:00"),
+      Data <= ymd_hms("2021-06-28 23:00:00")
+>>>>>>> 962fb716dd4f6fd165fb6bc9f8f8a09e005905de
     ) %>%
     select(Data, Valor = all_of(var)) %>%
     left_join(temperatura, by = "Data")
@@ -180,7 +190,11 @@ p_parte1 <-
   plot_annotation(
 
     caption =
+<<<<<<< HEAD
       "<span style='float:left;'>01/06/2026 00:00 até 01/07/2026 00:00</span>
+=======
+      "<span style='float:left;'>01/06/2021 00:00 até 28/06/2021 23:00</span>
+>>>>>>> 962fb716dd4f6fd165fb6bc9f8f8a09e005905de
        <span style='float:right;'>
        Temperatura do Ar: <span style='color:#F2EDE4;'>- - -</span>
        </span>",
@@ -209,7 +223,11 @@ p_parte2 <-
   plot_annotation(
 
     caption =
+<<<<<<< HEAD
       "<span style='float:left;'>01/06/2026 00:00 até 01/07/2026 00:00</span>
+=======
+      "<span style='float:left;'>01/06/2021 00:00 até 28/06/2021 23:00</span>
+>>>>>>> 962fb716dd4f6fd165fb6bc9f8f8a09e005905de
        <span style='float:right;'>
        Temperatura do Ar: <span style='color:#F2EDE4;'>- - -</span>
        </span>",
@@ -238,7 +256,11 @@ p_parte3 <-
   plot_annotation(
 
     caption =
+<<<<<<< HEAD
       "<span style='float:left;'>01/06/2026 00:00 até 01/07/2026 00:00</span>
+=======
+      "<span style='float:left;'>01/06/2021 00:00 até 28/06/2021 23:00</span>
+>>>>>>> 962fb716dd4f6fd165fb6bc9f8f8a09e005905de
        <span style='float:right;'>
        Temperatura do Ar: <span style='color:#F2EDE4;'>- - -</span>
        </span>",
