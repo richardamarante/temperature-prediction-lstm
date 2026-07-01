@@ -160,11 +160,12 @@ format:
 | Fluxo de calor sensível | J/m² |
 | Fluxo de calor latente | J/m² |
 | Ponto de orvalho | °C |
+| Umidade relativa | % |
 | Precipitação | mm |
 | Vento Leste-Oeste | m/s |
 | Vento Norte-Sul | m/s |
+| Velocidade do Vento | m/s |
 | Pressão atmosférica | Pa |
-| Umidade relativa | % |
 : {.tabela-tema .tabela-tema-destaque1}
 
 :::
@@ -313,7 +314,15 @@ Análises e Comparações
 
 ## Análise Descritiva
 
-![](media/plot_descritivo.png){fig-align="center" width="80%"}
+![](media/plot_descritivo_parte1.png){fig-align="center" width="80%"}
+
+## Análise Descritiva
+
+![](media/plot_descritivo_parte2.png){fig-align="center" width="80%"}
+
+## Análise Descritiva
+
+![](media/plot_descritivo_parte3.png){fig-align="center" width="80%"}
 
 ## Autocorrelação da Temperatura Horária
 

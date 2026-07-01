@@ -11,7 +11,7 @@
     "href": "Apresentação/index.html#os-dados",
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "2.1 Os dados",
-    "text": "2.1 Os dados\n\n\n\n\nOrigem\n\n\n\n\nERA5-Land — base principal\n\nECMWF & Copernicus\nResolução espacial: ~9 km\nResolução temporal: 1 h\nSem NAs — dado de satélite + modelo físico\nAtraso de até 6 dias em relação à data atual\n\n\n\n\n\n\nOpen Meteo / NASA GEOS-FP — complemento\n\nCobrem os dias mais recentes via API\nViabilizam previsões para datas futuras\n\n\n\n\n\n\nCobertura\n\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 → 23h 30/06/2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\n\n\n\n\nTemperatura do ar\n°C\n\n\nTemperatura da superfície\n°C\n\n\nRadiação solar líquida\nJ/m²\n\n\nRadiação térmica líquida\nJ/m²\n\n\nFluxo de calor sensível\nJ/m²\n\n\nFluxo de calor latente\nJ/m²\n\n\nPonto de orvalho\n°C\n\n\nPrecipitação\nmm\n\n\nVento Leste-Oeste\nm/s\n\n\nVento Norte-Sul\nm/s\n\n\nPressão atmosférica\nPa\n\n\nUmidade relativa\n%"
+    "text": "2.1 Os dados\n\n\n\n\nOrigem\n\n\n\n\nERA5-Land — base principal\n\nECMWF & Copernicus\nResolução espacial: ~9 km\nResolução temporal: 1 h\nSem NAs — dado de satélite + modelo físico\nAtraso de até 6 dias em relação à data atual\n\n\n\n\n\n\nOpen Meteo / NASA GEOS-FP — complemento\n\nCobrem os dias mais recentes via API\nViabilizam previsões para datas futuras\n\n\n\n\n\n\nCobertura\n\n\nLocal: Niterói, RJ\nPeríodo: 0h 31/12/2009 → 23h 30/06/2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariável\nUnidade\n\n\n\n\nTemperatura do ar\n°C\n\n\nTemperatura da superfície\n°C\n\n\nRadiação solar líquida\nJ/m²\n\n\nRadiação térmica líquida\nJ/m²\n\n\nFluxo de calor sensível\nJ/m²\n\n\nFluxo de calor latente\nJ/m²\n\n\nPonto de orvalho\n°C\n\n\nUmidade relativa\n%\n\n\nPrecipitação\nmm\n\n\nVento Leste-Oeste\nm/s\n\n\nVento Norte-Sul\nm/s\n\n\nVelocidade do Vento\nm/s\n\n\nPressão atmosférica\nPa"
   },
   {
     "objectID": "Apresentação/index.html#metodologia-1",
@@ -31,8 +31,8 @@
     "objectID": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
     "href": "Apresentação/index.html#autocorrelação-da-temperatura-horária",
     "title": "Previsão de Temperatura Horária em Niterói",
-    "section": "4.2 Autocorrelação da Temperatura Horária",
-    "text": "4.2 Autocorrelação da Temperatura Horária"
+    "section": "4.4 Autocorrelação da Temperatura Horária",
+    "text": "4.4 Autocorrelação da Temperatura Horária"
   },
   {
     "objectID": "Apresentação/index.html#todos-os-modelos",
@@ -75,5 +75,40 @@
     "title": "Previsão de Temperatura Horária em Niterói",
     "section": "6.1 Conclusão",
     "text": "6.1 Conclusão\n\n\n\n\nO que foi feito\n\n\n96 modelos LSTM treinados e comparados\nVariável-alvo: temperatura horária\nJanelas de 24h a 168h, horizontes de 1h a 24h\nMesma arquitetura em todos os modelos — isolando o efeito dos hiperparâmetros\nPrevisões geradas para datas futuras\n\n\n\n\n\n\n\nPrincipais Resultados\n\n\nLSTM demonstrou excelente desempenho na previsão horária de curto prazo — R² = 0,96, RMSE = 0,81 °C\nDesempenho cai com o aumento do horizonte\nA arquitetura conseguiu capturar padrões sazonais e extrapolá-los para horários futuros"
+  },
+  {
+    "objectID": "Apresentação/index.html#análise-descritiva---1",
+    "href": "Apresentação/index.html#análise-descritiva---1",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.1 Análise Descritiva - 1",
+    "text": "4.1 Análise Descritiva - 1"
+  },
+  {
+    "objectID": "Apresentação/index.html#análise-descritiva---2",
+    "href": "Apresentação/index.html#análise-descritiva---2",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.2 Análise Descritiva - 2",
+    "text": "4.2 Análise Descritiva - 2"
+  },
+  {
+    "objectID": "Apresentação/index.html#análise-descritiva---3",
+    "href": "Apresentação/index.html#análise-descritiva---3",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.3 Análise Descritiva - 3",
+    "text": "4.3 Análise Descritiva - 3"
+  },
+  {
+    "objectID": "Apresentação/index.html#análise-descritiva-1",
+    "href": "Apresentação/index.html#análise-descritiva-1",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.2 Análise Descritiva",
+    "text": "4.2 Análise Descritiva"
+  },
+  {
+    "objectID": "Apresentação/index.html#análise-descritiva-2",
+    "href": "Apresentação/index.html#análise-descritiva-2",
+    "title": "Previsão de Temperatura Horária em Niterói",
+    "section": "4.3 Análise Descritiva",
+    "text": "4.3 Análise Descritiva"
   }
 ]
