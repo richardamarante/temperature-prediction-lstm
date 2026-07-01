@@ -200,9 +200,10 @@
 
 .tabela-scroll tbody {
   display: block;
-  max-height: 450px;
-  overflow-y: auto;
+  max-height: 470px;
+  overflow-y: scroll;
   width: 100%;
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: #3FB0E8 #0E1820;
 }
@@ -225,6 +226,29 @@
   display: table;
   width: 100%;
   table-layout: fixed;
+}
+
+.box-tabela-scroll {
+  padding: 0.55em 0.7em;
+}
+
+.reveal table.tabela-modelos {
+  table-layout: fixed;
+  font-size: 0.58em;
+  margin: 0;
+}
+
+.reveal table.tabela-modelos th,
+.reveal table.tabela-modelos td {
+  padding: 6px 8px;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.reveal table.tabela-modelos tbody td:first-child {
+  color: #DCE6EA;
+  font-family: inherit;
+  font-weight: 400;
 }
 
 /* ===== Linhas destacadas tabela 1 ===== */

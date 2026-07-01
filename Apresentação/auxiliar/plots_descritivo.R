@@ -28,7 +28,7 @@ cinza <- "#AEB7BF"
 
 temperatura <- dados %>%
   filter(
-    Data >= ymd_hms("2021-06-21 00:00:00"),
+    Data >= ymd_hms("2021-06-01 00:00:00"),
     Data <= ymd_hms("2021-06-28 23:00:00")
   ) %>%
   select(Data, Temperatura)
@@ -41,7 +41,7 @@ grafico_variavel <- function(var,
 
   base <- dados %>%
     filter(
-      Data >= ymd_hms("2021-06-21 00:00:00"),
+      Data >= ymd_hms("2021-06-01 00:00:00"),
       Data <= ymd_hms("2021-06-28 23:00:00")
     ) %>%
     select(Data, Valor = all_of(var)) %>%
@@ -64,13 +64,14 @@ grafico_variavel <- function(var,
     geom_line(
       aes(y = Valor),
       colour = cor,
-      linewidth = 0.45
+      linewidth = 0.8
     ) +
 
     geom_line(
       aes(y = TempEscalada),
       colour = "#F2EDE4",
       linewidth = 0.45,
+      alpha = 0.5,
       linetype = "22"
     ) +
 
@@ -172,15 +173,14 @@ p12 <- grafico_variavel("VentoV_NorteSul","Vento V",roxo)
 
 # Figura final -----
 
-p <-
-  (p1 | p2 | p3 | p4) /
-  (p5 | p6 | p7 | p8) /
-  (p9 | p10 | p11 | p12) +
+p_parte1 <-
+  (p1 | p2) /
+  (p3 | p4)+
 
   plot_annotation(
 
     caption =
-      "<span style='float:left;'>21/06/2021 00:00 até 28/06/2021 23:00</span>
+      "<span style='float:left;'>01/06/2021 00:00 até 28/06/2021 23:00</span>
        <span style='float:right;'>
        Temperatura do Ar: <span style='color:#F2EDE4;'>- - -</span>
        </span>",
@@ -202,13 +202,91 @@ p <-
 
   )
 
-p
+p_parte2 <-
+  (p5 | p6) /
+  (p7 | p8)+
+
+  plot_annotation(
+
+    caption =
+      "<span style='float:left;'>01/06/2021 00:00 até 28/06/2021 23:00</span>
+       <span style='float:right;'>
+       Temperatura do Ar: <span style='color:#F2EDE4;'>- - -</span>
+       </span>",
+
+    theme = theme(
+
+      plot.background = element_rect(
+        fill = "#0A1620",
+        colour = NA
+      ),
+
+      plot.caption = ggtext::element_markdown(
+        colour = "#8FA8B5",
+        size = 11,
+        hjust = 0
+      )
+
+    )
+
+  )
+
+p_parte3 <-
+  (p9 | p10) /
+  (p11 | p12)+
+
+  plot_annotation(
+
+    caption =
+      "<span style='float:left;'>01/06/2021 00:00 até 28/06/2021 23:00</span>
+       <span style='float:right;'>
+       Temperatura do Ar: <span style='color:#F2EDE4;'>- - -</span>
+       </span>",
+
+    theme = theme(
+
+      plot.background = element_rect(
+        fill = "#0A1620",
+        colour = NA
+      ),
+
+      plot.caption = ggtext::element_markdown(
+        colour = "#8FA8B5",
+        size = 11,
+        hjust = 0
+      )
+
+    )
+
+  )
+
+p_parte1
+p_parte2
+p_parte3
 
 # Salvar -----
 
 ggsave(
-  "Apresentação/media/plot_descritivo.png",
-  plot = p,
+  "Apresentação/media/plot_descritivo_parte1.png",
+  plot = p_parte1,
+  dpi = 600,
+  width = 12,
+  height = 7,
+  units = "in",
+  bg = "transparent"
+)
+ggsave(
+  "Apresentação/media/plot_descritivo_parte2.png",
+  plot = p_parte2,
+  dpi = 600,
+  width = 12,
+  height = 7,
+  units = "in",
+  bg = "transparent"
+)
+ggsave(
+  "Apresentação/media/plot_descritivo_parte3.png",
+  plot = p_parte3,
   dpi = 600,
   width = 12,
   height = 7,
